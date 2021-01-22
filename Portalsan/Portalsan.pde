@@ -6,7 +6,7 @@ void setup() {
   background(155, 173, 183);
   frameRate(60);
   
-  
+  ellipseMode(CENTER);
   
 }
 
@@ -16,6 +16,8 @@ void draw() {
   
   background(155, 173, 183);
   
+  p.movePlayer();
+  p.render();
   
   
 }

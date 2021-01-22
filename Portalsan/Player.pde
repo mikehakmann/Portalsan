@@ -13,7 +13,7 @@ class Player {
   
   
   void render() {
-    
+    ellipse(pos.x, pos.y, 50, 50);
   }
   
 
@@ -24,15 +24,7 @@ class Player {
 
   boolean playerSetMove(int k, boolean b) {
     switch (k) {              // "
-    case +'W':                // "
-    case UP:                  // "
-      return isUp = b;        // "
-                              // "
-    case +'S':                // this code may be switched out with if-statements, if we need 
-    case DOWN:                // "
-      return isDown = b;      // "
-                              // "
-    case +'A':                // "
+    case +'A':                // Player can only move sideways and jump (which isn't very usefull most of the time)
     case LEFT:                // "
       return isLeft = b;      // "
                               // "
