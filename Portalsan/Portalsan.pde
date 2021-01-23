@@ -1,12 +1,13 @@
-Player p = new Player();
+Player p;
 
 
 void setup() {
   size(802, 602);
   background(155, 173, 183);
   frameRate(60);
-  
   ellipseMode(CENTER);  //temporary player model until actual player model is done.
+  
+  p = new Player();
   
 }
 
@@ -14,6 +15,8 @@ void setup() {
 
 void draw() {
   background(155, 173, 183);
+  fill(0);
+  rect(0, height*0.90, width, height*0.10);
   
   p.movePlayer();
   p.render();
