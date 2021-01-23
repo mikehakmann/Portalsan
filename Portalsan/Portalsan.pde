@@ -6,14 +6,13 @@ void setup() {
   background(155, 173, 183);
   frameRate(60);
   
-  ellipseMode(CENTER);
+  ellipseMode(CENTER);  //temporary player model until actual player model is done.
   
 }
 
 
 
 void draw() {
-  
   background(155, 173, 183);
   
   p.movePlayer();
