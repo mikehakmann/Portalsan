@@ -16,8 +16,9 @@ void setup() {
 void draw() {
   background(155, 173, 183);
   fill(0);
-  rect(0, height*0.90, width, height*0.10);
+  rect(0, height*0.70, width, height*0.25);
   
+  p.verticleMovement();
   p.movePlayer();
   p.render();
   
@@ -27,6 +28,10 @@ void draw() {
 
 void keyPressed() {
   p.playerSetMove(keyCode, true);
+  
+  if (keyCode == ' ') {
+    p.jump = true;
+  }
 }
 
 void keyReleased() {
