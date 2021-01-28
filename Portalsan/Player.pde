@@ -1,7 +1,6 @@
 class Player {
-  final PVector initialGravity = new PVector(0.0, 0.2);
-  PVector gravity = new PVector(0.0, 0.2);
-  PVector pos, vel, gravAcc, jumpAcc, playerAim;
+  final PVector initialGravity = new PVector(0.0, 0.2);  //to reset gravity later on
+  PVector pos, vel, gravity, gravAcc, jumpAcc, playerAim;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
 
@@ -10,7 +9,7 @@ class Player {
   Player() {
     pos = new PVector(width/2, height*0.05);
     vel = new PVector(5, 5);
-    //initialGravity = new PVector(0.0, 0.2);  //to reset gravity, when player is on the ground
+    gravity = new PVector(0.0, 0.2);
     gravity.y = initialGravity.y;  // should maybe be tweaked - set these to around gravity=x and gravAcc=2x (that seems to look more realistic)
     gravAcc = new PVector(0, 0.4);  // and set them between 0.1 and 0.5 (less is too slow, and more is too fast)
     jumpAcc = new PVector(0, -5);
