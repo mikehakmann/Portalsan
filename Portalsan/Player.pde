@@ -1,5 +1,7 @@
 class Player {
-  PVector pos, vel, initialGravity, gravity, gravAcc, jumpAcc, playerAim;
+  final PVector initialGravity = new PVector(0.0, 0.2);
+  PVector gravity = new PVector(0.0, 0.2);
+  PVector pos, vel, gravAcc, jumpAcc, playerAim;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
 
@@ -8,10 +10,10 @@ class Player {
   Player() {
     pos = new PVector(width/2, height*0.05);
     vel = new PVector(5, 5);
-    initialGravity = new PVector(0, 0.2);  //to reset gravity, when player is on the ground
-    gravity = initialGravity;  // should maybe be tweaked - set these to around gravity=x and gravAcc=2x (that seems to look more realistic)
+    //initialGravity = new PVector(0.0, 0.2);  //to reset gravity, when player is on the ground
+    gravity.y = initialGravity.y;  // should maybe be tweaked - set these to around gravity=x and gravAcc=2x (that seems to look more realistic)
     gravAcc = new PVector(0, 0.4);  // and set them between 0.1 and 0.5 (less is too slow, and more is too fast)
-    jumpAcc = new PVector(0, -2);
+    jumpAcc = new PVector(0, -5);
     playerAim = new PVector(mouseX, mouseY);
   }
 
@@ -22,48 +24,30 @@ class Player {
   }
 
   void verticleMovement() {
-    println(gravity);
 
     if (get(int(pos.x), int(pos.y + 25)) == -16777216  &&  jump) {  //if player is on the ground/platform (i.e. not falling)
-      //gravity.sub(gravAcc);
-      //gravAcc.mult(-1);
-      gravity = jumpAcc;
-      println(gravity);
+      gravity.y = jumpAcc.y;
       pos.add(gravity);
+      jump = false;
     }
     else if (get(int(pos.x), int(pos.y + 25)) != -16777216) {  //if the color right at the bottom edge of the player is NOT black: add gravity
-      if (jump) {
-        initJump();
-      } else {
-        gravity.add(gravAcc);  //for the acceleration-like effect of gravity
-        jump = false;
-      }
+      gravity.add(gravAcc);  //for the acceleration-like effect of gravity
       pos.add(gravity);
-    } else {
-      gravity = initialGravity;  //to reset gravity
     }
-
-
-
-
-    if (get(int(pos.x), int(pos.y + 25)) == -16777216) {
-      gravity = initialGravity;
+    else {
+      gravity.y = initialGravity.y;  //to reset gravity
     }
-    
+    println("initial gravity is: " + initialGravity);
+
     if ((get(int(pos.x), int((pos.y + 25) + gravity.y)))  == -16777216) {  // "(pos.y + 25) + gravity.y" is (almost) player's pos in the next frame, when falling
-      for (int i = 0; get(int(pos.x), int(pos.y + 25)) != -16777216; i++) {
+      for (float i = 0.0f; get(int(pos.x), int(pos.y + 25)) != -16777216; i += 0.1f) {
         pos.y += i;
 
-        if (get(int(pos.x), int(pos.y)) == -16777216) {
+        if (get(int(pos.x), int(pos.y + 25)) == -16777216) {
           break;
         }
       }
     }
-  }
-
-  void initJump() {
-    //gravity.add(jumpAcc);
-    jump = true;
   }
 
 

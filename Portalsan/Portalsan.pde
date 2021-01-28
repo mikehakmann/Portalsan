@@ -36,4 +36,8 @@ void keyPressed() {
 
 void keyReleased() {
   p.playerSetMove(keyCode, false);
+  
+  if (keyCode == ' ') {
+    p.jump = false;
+  }
 }
