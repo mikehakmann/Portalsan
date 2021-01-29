@@ -7,7 +7,7 @@ class Player {
   boolean goLeft, goRight, jump = false;
 
   Player() {
-    pos = new PVector(width/2, height*0.05);
+    pos = new PVector(width*0.1, height*0.8);
     vel = new PVector(5, 5);
     gravity = new PVector(0.0, 0.2);
     gravity.y = initialGravity.y;  // should maybe be tweaked - set these to around gravity=x and gravAcc=2x (that seems to look more realistic)
@@ -18,9 +18,7 @@ class Player {
 
 
   void render() {
-    //fill(255);
-    //ellipse(pos.x, pos.y, 30, 30);  //temporary player model until actual player model is done.
-    image(player);
+    image(player, pos.x, pos.y);
   }
 
   void verticleMovement() {
