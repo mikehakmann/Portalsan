@@ -23,12 +23,12 @@ class Player {
 
   void verticleMovement() {
 
-    if (get(int(pos.x), int(pos.y + 25)) == -16777216  &&  jump) {  //if player is on the ground/platform (i.e. not falling)
+    if (get(int(pos.x), int(pos.y + 30)) == -16777216  &&  jump) {  //if player is on the ground/platform (i.e. not falling)
       gravity.y = jumpAcc.y;
       pos.add(gravity);
       jump = false;
     }
-    else if (get(int(pos.x), int(pos.y + 25)) != -16777216) {  //if the color right at the bottom edge of the player is NOT black: add gravity
+    else if (get(int(pos.x), int(pos.y + 30)) != -16777216) {  //if the color right at the bottom edge of the player is NOT black: add gravity
       gravity.add(gravAcc);  //for the acceleration-like effect of gravity
       pos.add(gravity);
     }
@@ -37,11 +37,11 @@ class Player {
     }
     println("initial gravity is: " + initialGravity);
 
-    if ((get(int(pos.x), int((pos.y + 25) + gravity.y)))  == -16777216) {  // "(pos.y + 25) + gravity.y" is (almost) player's pos in the next frame, when falling
-      for (float i = 0.0f; get(int(pos.x), int(pos.y + 25)) != -16777216; i += 0.1f) {
+    if ((get(int(pos.x), int((pos.y + 30) + gravity.y)))  == -16777216) {  // "(pos.y + 25) + gravity.y" is (almost) player's pos in the next frame, when falling
+      for (float i = 0.0f; get(int(pos.x), int(pos.y + 30)) != -16777216; i += 0.1f) {
         pos.y += i;
 
-        if (get(int(pos.x), int(pos.y + 25)) == -16777216) {
+        if (get(int(pos.x), int(pos.y + 30)) == -16777216) {
           break;
         }
       }
