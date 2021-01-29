@@ -18,8 +18,9 @@ class Player {
 
 
   void render() {
-    fill(255);
-    ellipse(pos.x, pos.y, 50, 50);  //temporary player model until actual player model is done.
+    //fill(255);
+    //ellipse(pos.x, pos.y, 30, 30);  //temporary player model until actual player model is done.
+    image(player);
   }
 
   void verticleMovement() {
