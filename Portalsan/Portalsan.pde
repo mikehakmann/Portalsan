@@ -4,8 +4,8 @@ import processing.sound.*;
 
 Player p;
 Maps m;
-PImage player, tutorialStage, stage1, error;
-float spawnX, spawnY;
+PImage player portalGun, tutorialStage, stage1, error;
+float spawnX, spawnY angle, targetAngle;
 int stage = 0;
 
 
@@ -18,6 +18,7 @@ void setup() {
   p = new Player();
   m = new Maps();
   player = loadImage("Steve.png");  //image is 30x30 pixels
+  portalGun = loadImage("portal_gun.png");
   tutorialStage = loadImage("tutorial.png");
   stage1 = loadImage("stage_1.png");
   error = loadImage("error.png");
