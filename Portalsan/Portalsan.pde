@@ -1,40 +1,57 @@
+import processing.sound.*;
 
-float angle = 0;
-float targetAngle = 0;
-PImage picture;
+//import processing.sound.*;
+
+Player p;
+Maps m;
+PImage player portalGun, tutorialStage, stage1, error;
+float spawnX, spawnY angle, targetAngle;
+int stage = 0;
+
 
 void setup() {
- 
-  size( 802, 602 );
-  background( 0 );
- 
+  size(802, 602);
+  background(155, 173, 183);
+  frameRate(60);
+  //ellipseMode(CENTER);  //temporary player model until actual player model is done.
+
+  p = new Player();
+  m = new Maps();
+  player = loadImage("Steve.png");  //image is 30x30 pixels
+  portalGun = loadImage("portal_gun.png");
+  tutorialStage = loadImage("tutorial.png");
+  stage1 = loadImage("stage_1.png");
+  error = loadImage("error.png");
 }
+
+
 
 void draw() {
-  fill( 0 );
-  rect( 0, 0, width, height );
+  imageMode(CENTER);
+  image(m.loadMap(stage), width/2, height/2);
 
-  angle = atan2( mouseY - height/2, mouseX - width/2 );
+  fill(0);
 
-  float dir = (angle - targetAngle) / TWO_PI;
-  dir -= round( dir );
-  dir *= TWO_PI;
+  p.verticleMovement();
+  p.movePlayer();
+  p.render();
 
-  targetAngle += dir;
-
-  noFill();
-  stroke( 255 );
-  pushMatrix();
-  translate( width/2, height/2 );
-  rotate( targetAngle );
-
-  if(angle>=-PI/2 && angle <= PI/2){
-  scale(-1,1);
-  }else{
-    scale(-1,-1);
+  println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
 }
-  image(picture, 0,0);
-  popMatrix();
-  println(angle);
 
+
+void keyPressed() {
+  p.playerSetMove(keyCode, true);
+
+  if (keyCode == ' ') {
+    p.jump = true;
+  }
+}
+
+void keyReleased() {
+  p.playerSetMove(keyCode, false);
+
+  if (keyCode == ' ') {
+    p.jump = false;
+  }
 }
