@@ -50,7 +50,7 @@ class Player {
     //if (get(int(pos.x + 15), int(pos.y)) != -16777216  ||  get(int(pos.x - 15), int(pos.y)) != -16777216) {
     //  pos.x = constrain(pos.x + vel.x * (int(goRight) - int(goLeft)), 11, width  - 11);
     //}
-    if (get(int(pos.x + 15), int(pos.y - 15)) != -16777216 || get(int(pos.x + 15), int(pos.y + 15)) != -16777216) {
+    if (get(int(pos.x + 11), int(pos.y - 15)) != -16777216 || get(int(pos.x + 11), int(pos.y + 15)) != -16777216) {
       if (get(int(pos.x + 11), int(pos.y)) != -16777216) {
         pos.x = constrain(pos.x + vel.x * (int(goRight)), 11, width  - 11);
       }
