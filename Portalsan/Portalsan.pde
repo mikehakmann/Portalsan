@@ -1,6 +1,7 @@
 Player p;
 Maps m;
 PImage player, tutorialStage, stage1, error;
+float spawnX, spawnY;
 int stage = 0;
 
 
@@ -12,7 +13,7 @@ void setup() {
   
   p = new Player();
   m = new Maps();
-  player = loadImage("Steve.png");
+  player = loadImage("Steve.png");  //image is 30x30 pixels
   tutorialStage = loadImage("tutorial.png");
   stage1 = loadImage("stage_1.png");
   error = loadImage("error.png");
@@ -21,10 +22,10 @@ void setup() {
 
 
 void draw() {
+  imageMode(CENTER);
   //background(155, 173, 183);
   //checkStage();
-  image(m.loadMap(stage), 0, 0);
-  
+  image(m.loadMap(stage), width/2, height/2);
   
   fill(0);
   
@@ -32,7 +33,8 @@ void draw() {
   p.movePlayer();
   p.render();
   
-  println("X: " + mouseX + "   Y: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
+  println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
+  //noLoop();
 }
 
 
