@@ -3,7 +3,8 @@ class Player {
   PVector pos, vel, gravity, gravAcc, jumpAcc, playerAim;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
-
+  
+  boolean checkLeft, checkRight = true;
   boolean goLeft, goRight, jump = false;
 
   Player() {
@@ -27,10 +28,12 @@ class Player {
       gravity.y = jumpAcc.y;
       pos.add(gravity);
       jump = false;
-    } else if (get(int(pos.x), int(pos.y + 15)) != -16777216) {  //if the color right at the bottom edge of the player is NOT black: add gravity
+    }//
+    else if (get(int(pos.x), int(pos.y + 15)) != -16777216) {  //if the color right at the bottom edge of the player is NOT black: add gravity
       gravity.add(gravAcc);  //for the acceleration-like effect of gravity
       pos.add(gravity);
-    } else {
+    }//
+    else {
       gravity.y = initialGravity.y;  //to reset gravity
     }
 
@@ -50,19 +53,47 @@ class Player {
     //if (get(int(pos.x + 15), int(pos.y)) != -16777216  ||  get(int(pos.x - 15), int(pos.y)) != -16777216) {
     //  pos.x = constrain(pos.x + vel.x * (int(goRight) - int(goLeft)), 11, width  - 11);
     //}
-    if (get(int(pos.x + 11), int(pos.y - 15)) != -16777216 || get(int(pos.x + 11), int(pos.y + 15)) != -16777216) {
-      if (get(int(pos.x + 11), int(pos.y)) != -16777216) {
+    if (get(int(pos.x + 15), int(pos.y - 15)) != -16777216 ||
+        get(int(pos.x + 15), int(pos.y + 15)) != -16777216) {
+      if (get(int(pos.x + 15), int(pos.y)) != -16777216) {
         pos.x = constrain(pos.x + vel.x * (int(goRight)), 11, width  - 11);
       }
-    }
 
-    if (get(int(pos.x - 11), int(pos.y)) != -16777216) {
-      pos.x = constrain(pos.x + vel.x * (- int(goLeft)), 11, width  - 11);
+      if (get(int(pos.x - 14), int(pos.y)) != -16777216) {
+        pos.x = constrain(pos.x + vel.x * (- int(goLeft)), 11, width  - 11);
+      }
     }
-
-    //if (pos.x - 15 >= width && pos.x + 15 <= width && pos.y - 15 >= height && pos.y + 15 <= height) {  //checks if player is outside the screen
-    //  println("cyka");
+    
+    //====== Vlad's kode
+    //float temp=13;
+    //for (int i = -15; i<15; i++) {
+    //  if (get(int(pos.x + temp), int(pos.y + i)) == -16777216) {
+    //    checkRight=false;
+    //  }
+    //  if (get(int(pos.x - temp), int(pos.y + i)) == -16777216) {
+    //    checkLeft=false;
+    //  }
     //}
+
+    //if (get(int(pos.x + temp), int(pos.y)) != -16777216 && checkRight) {
+    //  pos.x = constrain(pos.x + vel.x * (int(goRight)), 11, width  - 11);
+    //}
+
+
+    //if (get(int(pos.x - temp), int(pos.y)) != -16777216 && checkLeft) {
+    //  pos.x = constrain(pos.x + vel.x * (- int(goLeft)), 11, width  - 11);
+    //}
+    //checkRight=true;
+    //checkLeft=true;
+    //======
+
+
+
+    if (pos.y >= height) {  //checks if player is outside the screen
+      pos.x = spawnX;  // resets players position - basically respawns player
+      pos.y = spawnY;  // "
+      gravity.y = initialGravity.y;  //reset gravity so player doesn't end up in the ground upon respawn
+    }
   }
 
   boolean playerSetMove(int k, boolean b) {
