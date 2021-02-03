@@ -1,10 +1,11 @@
 class PortalGun {
-
-
-
-
-
-  angle = atan2( mouseY - height/2, mouseX - width/2 );
+  float angle, targetAngle;
+  
+  void rotateGun() {
+    
+  
+  
+  angle = atan2(mouseY - p.pos.y, mouseX - p.pos.x);
 
   float dir = (angle - targetAngle) / TWO_PI;
   dir -= round( dir );
@@ -15,15 +16,20 @@ class PortalGun {
   noFill();
   stroke( 255 );
   pushMatrix();
-  translate( width/2, height/2 );
+  translate(p.pos.x, p.pos.y);
   rotate( targetAngle );
 
   if (angle>=-PI/2 && angle <= PI/2) {
     scale(-1, 1);
-  } else {
+    flipPlayer = true;
+  }//
+  else {
     scale(-1, -1);
+    flipPlayer = false;
   }
-  image(picture, 0, 0);
+  image(portalGun, 0, 0);
   popMatrix();
   println(angle);
+  
+  }
 }

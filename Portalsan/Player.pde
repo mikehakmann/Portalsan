@@ -3,7 +3,7 @@ class Player {
   PVector pos, vel, gravity, gravAcc, jumpAcc, playerAim;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
-  
+
   boolean checkLeft, checkRight = true;
   boolean goLeft, goRight, jump = false;
 
@@ -19,7 +19,19 @@ class Player {
 
 
   void render() {
-    image(player, pos.x, pos.y);
+    
+    if (!flipPlayer) {
+      pushMatrix();
+      //scale(-1, 1);
+      image(player, pos.x, pos.y);
+      popMatrix();
+    }//
+    else {
+      pushMatrix();
+      //scale(-1, -1);
+      image(player, pos.x, pos.y);
+      popMatrix();
+    }
   }
 
   void verticleMovement() {
@@ -54,7 +66,7 @@ class Player {
     //  pos.x = constrain(pos.x + vel.x * (int(goRight) - int(goLeft)), 11, width  - 11);
     //}
     if (get(int(pos.x + 15), int(pos.y - 15)) != -16777216 ||
-        get(int(pos.x + 15), int(pos.y + 15)) != -16777216) {
+      get(int(pos.x + 15), int(pos.y + 15)) != -16777216) {
       if (get(int(pos.x + 15), int(pos.y)) != -16777216) {
         pos.x = constrain(pos.x + vel.x * (int(goRight)), 11, width  - 11);
       }
@@ -63,7 +75,7 @@ class Player {
         pos.x = constrain(pos.x + vel.x * (- int(goLeft)), 11, width  - 11);
       }
     }
-    
+
     //====== Vlad's kode
     //float temp=13;
     //for (int i = -15; i<15; i++) {
