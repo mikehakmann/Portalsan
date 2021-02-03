@@ -3,7 +3,8 @@ class Player {
   PVector pos, vel, gravity, gravAcc, jumpAcc, playerAim;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
-
+  
+  float angle, targetAngle;
   boolean checkLeft, checkRight = true;
   boolean goLeft, goRight, jump = false;
 
@@ -19,23 +20,20 @@ class Player {
 
 
   void render() {
-    
+    pushMatrix();
+    translate(pos.x, pos.y);
     if (!flipPlayer) {
-      pushMatrix();
-      //scale(-1, 1);
-      image(player, pos.x, pos.y);
-      popMatrix();
+      scale(1, 1);
     }//
     else {
-      pushMatrix();
-      //scale(-1, -1);
-      image(player, pos.x, pos.y);
-      popMatrix();
+      scale(-1, 1);
     }
+    image(player, 0, 0);
+    popMatrix();
   }
 
-  void verticleMovement() {
 
+  void verticleMovement() {
     if (get(int(pos.x), int(pos.y + 15)) == -16777216  &&  jump) {  //if player is on the ground/platform (i.e. not falling)
       gravity.y = jumpAcc.y;
       pos.add(gravity);
@@ -60,7 +58,19 @@ class Player {
     }
   }
 
+  boolean playerSetMove(int k, boolean b) {
+    switch (k) {              // "
+    case + 'A':               // Player can only move sideways
+      return goLeft = b;      // "
 
+    case + 'D':               // "
+      return goRight = b;     // "
+
+    default:                  // "
+      return b;               // "
+    }
+  }
+  
   void movePlayer() {  //checks color of pixel around player, to see if they are not black ("-16777216" = black). If so, allows player to continue movement in desired direction
     //if (get(int(pos.x + 15), int(pos.y)) != -16777216  ||  get(int(pos.x - 15), int(pos.y)) != -16777216) {
     //  pos.x = constrain(pos.x + vel.x * (int(goRight) - int(goLeft)), 11, width  - 11);
@@ -99,25 +109,38 @@ class Player {
     //checkLeft=true;
     //======
 
-
-
     if (pos.y >= height) {  //checks if player is outside the screen
       pos.x = spawnX;  // resets players position - basically respawns player
       pos.y = spawnY;  // "
       gravity.y = initialGravity.y;  //reset gravity so player doesn't end up in the ground upon respawn
     }
   }
+  
+  
+  void rotateGun() {
+  angle = atan2(mouseY - p.pos.y, mouseX - p.pos.x);  //find angle of mouse pos relative to player's pos
 
-  boolean playerSetMove(int k, boolean b) {
-    switch (k) {              // "
-    case + 'A':               // Player can only move sideways
-      return goLeft = b;      // "
+  float dir = (angle - targetAngle) / TWO_PI;
+  dir -= round( dir );
+  dir *= TWO_PI;
 
-    case + 'D':               // "
-      return goRight = b;     // "
+  targetAngle += dir;
 
-    default:                  // "
-      return b;               // "
-    }
+  noFill();
+  stroke( 255 );
+  pushMatrix();
+  translate(p.pos.x, p.pos.y);
+  rotate( targetAngle );
+
+  if (angle>=-PI/2 && angle <= PI/2) {  //if-else statement for flipping Portal Gun if mouse is above/below player
+    scale(-1, 1);
+    flipPlayer = true;
+  }//
+  else {
+    scale(-1, -1);
+    flipPlayer = false;
+  }
+  image(portalGun, 0, 0);
+  popMatrix();
   }
 }

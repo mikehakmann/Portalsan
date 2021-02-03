@@ -38,7 +38,7 @@ void draw() {
   p.verticleMovement();
   p.movePlayer();
   p.render();
-  pg.rotateGun();
+  p.rotateGun();
 
   println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
 }
