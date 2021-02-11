@@ -3,11 +3,11 @@ class Player {
   PVector pos, vel, gravity, gravAcc, jumpAcc, playerAim;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
-  
+
   float angle, targetAngle;
   boolean checkLeft, checkRight = true;
   boolean goLeft, goRight, jump = false;
-
+  boolean portalUp, portalDown = false;
   Player() {
     pos = new PVector(width*0.1, height*0.89);
     vel = new PVector(5, 5);
@@ -70,7 +70,7 @@ class Player {
       return b;               // "
     }
   }
-  
+
   void movePlayer() {  //checks color of pixel around player, to see if they are not black ("-16777216" = black). If so, allows player to continue movement in desired direction
     //if (get(int(pos.x + 15), int(pos.y)) != -16777216  ||  get(int(pos.x - 15), int(pos.y)) != -16777216) {
     //  pos.x = constrain(pos.x + vel.x * (int(goRight) - int(goLeft)), 11, width  - 11);
@@ -115,32 +115,43 @@ class Player {
       gravity.y = initialGravity.y;  //reset gravity so player doesn't end up in the ground upon respawn
     }
   }
-  
-  
+
+
   void rotateGun() {
-  angle = atan2(mouseY - p.pos.y, mouseX - p.pos.x);  //find angle of mouse pos relative to player's pos
+    angle = atan2(mouseY - p.pos.y, mouseX - p.pos.x);  //find angle of mouse pos relative to player's pos
 
-  float dir = (angle - targetAngle) / TWO_PI;
-  dir -= round( dir );
-  dir *= TWO_PI;
+    float dir = (angle - targetAngle) / TWO_PI;
+    dir -= round( dir );
+    dir *= TWO_PI;
 
-  targetAngle += dir;
+    targetAngle += dir;
 
-  noFill();
-  stroke( 255 );
-  pushMatrix();
-  translate(p.pos.x, p.pos.y);
-  rotate( targetAngle );
+    noFill();
+    stroke( 255 );
+    pushMatrix();
+    translate(p.pos.x, p.pos.y);
+    rotate( targetAngle ); 
 
-  if (angle>=-PI/2 && angle <= PI/2) {  //if-else statement for flipping Portal Gun if mouse is above/below player
-    scale(-1, 1);
-    flipPlayer = true;
-  }//
-  else {
-    scale(-1, -1);
-    flipPlayer = false;
-  }
-  image(portalGun, 0, 0);
-  popMatrix();
+    if (angle>=-PI/2 && angle <= PI/2) {  //if-else statement for flipping Portal Gun if mouse is above/below player
+      scale(-1, 1);
+      //println("højre");
+      flipPlayer = true;
+    }//
+    else {
+      scale(-1, -1);
+      //println("venstre");
+      flipPlayer = false;
+    }
+
+    if (angle>= PI/4 && angle <= (3.0 / 4) * Math.PI) {
+      //println("ned");
+      portalDown = true;
+    }
+    if (angle<= -PI/4 && angle >= (-3.0 / 4) * Math.PI) {
+      //println("op");
+      portalUp = true;
+    }
+    image(portalGun, 0, 0);
+    popMatrix();
   }
 }
