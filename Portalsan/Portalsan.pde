@@ -1,5 +1,6 @@
 import processing.sound.*;
 
+Bullet b;
 Player p;
 PortalGun pg;
 Maps m;
@@ -16,7 +17,8 @@ void setup() {
   frameRate(60);
   millis();
   //ellipseMode(CENTER);  //temporary player model until actual player model is done.
-
+  
+  b = new Bullet();
   p = new Player();
   pg = new PortalGun();
   m = new Maps();

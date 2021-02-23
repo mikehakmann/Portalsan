@@ -9,16 +9,14 @@ int last_millis;
 
 class PortalGun {
 
-
-
-
   void portalSpawn1() {
-    println(last_millis);
-    if ( millis() - last_millis> 2000) {
+    //println(last_millis);
+    if ( millis() - last_millis > 2000) {
 
       portalX1 = mouseX;
       portalY1 = mouseY;
       renderPortal1 = true;
+      
 
       //portal2 = loadImage("Portal Magenta.png");
       println("Spawned Portal!");
@@ -33,8 +31,8 @@ class PortalGun {
   }
 
   void portalSpawn2() {
-    println(last_millis);
-    if ( millis() - last_millis> 2000) {
+    //println(last_millis);
+    if ( millis() - last_millis > 2000) {
 
       portalX2 = mouseX;
       portalY2 = mouseY;
