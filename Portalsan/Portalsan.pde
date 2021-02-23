@@ -8,7 +8,7 @@ PImage player, portalGun, tutorialStage, stage1, error, portal1, portal2;
 float spawnX, spawnY;
 boolean flipPlayer = false;
 int stage = 0;
-int   portalTimer = 2000;
+int portalTimer = 2000;
 
 
 void setup() {
@@ -17,7 +17,7 @@ void setup() {
   frameRate(60);
   millis();
   //ellipseMode(CENTER);  //temporary player model until actual player model is done.
-  
+
   b = new Bullet();
   p = new Player();
   pg = new PortalGun();
@@ -29,10 +29,7 @@ void setup() {
   error = loadImage("error.png");
   portal1 = loadImage("Portal green.png");
   portal2 = loadImage("Portal Magenta.png");
-last_millis = millis();
-
-
-
+  last_millis = millis();
 }
 
 
@@ -43,24 +40,30 @@ void draw() {
 
   fill(0);
 
-
   p.verticleMovement();
   p.movePlayer();
   p.render();
   p.rotateGun();
-  //pg.portalSpawn();
   pg.render(portalX1, portalY1);
-  pg.render2(portalX2,portalY2);
+  pg.render2(portalX2, portalY2);
+  
+  //if (b.fireBullet) {
+    b.updateBullet();
+  //}
+  b.bulletTargeting();
+  println(b.dir.heading());
+  println(b.bSpeed);
+  
   //println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
 }
 
-void mousePressed(){
+void mousePressed() {
   if (mouseButton == LEFT) {
-pg.portalSpawn1();
+    pg.portalSpawn1();
   }
-   if (mouseButton == RIGHT){
-   pg.portalSpawn2();
-   }
+  if (mouseButton == RIGHT) {
+    pg.portalSpawn2();
+  }
 }
 void keyPressed() {
   p.playerSetMove(keyCode, true);

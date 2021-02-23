@@ -17,9 +17,12 @@ class PortalGun {
       portalY1 = mouseY;
       renderPortal1 = true;
       
+      //b.bulletTargeting();
+      //b.fireBullet = true;
+      
 
       //portal2 = loadImage("Portal Magenta.png");
-      println("Spawned Portal!");
+      //println("Spawned Portal!");
 
 
       if (portalTimer < 0) {
@@ -39,7 +42,7 @@ class PortalGun {
       renderPortal2 = true;
 
       //portal2 = loadImage("Portal Magenta.png");
-      println("Spawned Portal2!");
+      //println("Spawned Portal2!");
 
 
       if (portalTimer < 0) {
