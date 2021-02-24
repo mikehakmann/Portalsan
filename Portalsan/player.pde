@@ -8,6 +8,7 @@ class Player {
   boolean checkLeft, checkRight = true;
   boolean goLeft, goRight, jump = false;
   boolean portalUp, portalDown = false;
+  
   Player() {
     pos = new PVector(width*0.1, height*0.89);
     vel = new PVector(5, 5);

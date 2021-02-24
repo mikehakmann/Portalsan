@@ -1,22 +1,5 @@
 class Maps {
   
-  //int checkStage() {
-  //  if (stage == 0  &&  ) {
-      
-  //  }
-    
-  //  if () {
-      
-  //  }
-    
-  //  if () {
-      
-  //  }
-    
-    
-  //}
-  
-  
   PImage loadMap(int stage) {  //a function for switching the current map/stage
     if (stage == 0) {
       spawnX = width*0.1;
@@ -32,8 +15,6 @@ class Maps {
       return tutorialStage;
     }
     
-    
     return error;
   }
-  
 }
