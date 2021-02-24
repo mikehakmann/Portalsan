@@ -27,9 +27,8 @@ void setup() {
   error = loadImage("error.png");
   portal1 = loadImage("Portal green.png");
   portal2 = loadImage("Portal Magenta.png");
-last_millis = millis();
-
-
+last_millis1 = millis();
+last_millis2 = millis();
 
 }
 
@@ -40,7 +39,8 @@ void draw() {
   image(m.loadMap(stage), width/2, height/2);
 
   fill(0);
-
+println(portalX1);
+println(p.pos.x);
 
   p.verticleMovement();
   p.movePlayer();
@@ -49,6 +49,8 @@ void draw() {
   //pg.portalSpawn();
   pg.render(portalX1, portalY1);
   pg.render2(portalX2,portalY2);
+  pg.portalTP1();
+  pg.portalTP2();
   //println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
 }
 
