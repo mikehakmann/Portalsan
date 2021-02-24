@@ -46,14 +46,13 @@ void draw() {
   p.rotateGun();
   pg.render(portalX1, portalY1);
   pg.render2(portalX2, portalY2);
-  
-  //if (b.fireBullet) {
-    b.updateBullet();
-  //}
-  b.bulletTargeting();
-  println(b.dir.heading());
-  println(b.bSpeed);
-  
+   
+   
+    b.fire();
+  b.bulletUpdate();
+
+
+
   //println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
 }
 
