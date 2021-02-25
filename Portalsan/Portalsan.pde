@@ -47,7 +47,7 @@ void draw() {
   pg.render(portalX1, portalY1);
   pg.render2(portalX2, portalY2);
   
-  b.fire();
+  //b.fire();
   b.bulletUpdate();
 
 

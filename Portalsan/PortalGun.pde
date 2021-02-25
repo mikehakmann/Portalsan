@@ -11,7 +11,9 @@ class PortalGun {
 
   void portalSpawn1() {
     if ( millis() - last_millis > 2000) {
-
+      b.fire();
+      
+      
       portalX1 = mouseX;
       portalY1 = mouseY;
       renderPortal1 = true;
