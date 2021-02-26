@@ -1,6 +1,7 @@
 class Bullet {
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
   float angle;
+  boolean firedBullet = false;
 
   Bullet() {
     bulletPos = new PVector(100, 100);
@@ -25,21 +26,27 @@ class Bullet {
     dir.add(speed);
     popMatrix();
   }
-  
-  
+
+
   void checkCollision() {
     if (get(int(bulletPos.x + dir.x), int(bulletPos.y + dir.y)) == -16777216) {  //if bullets pos in next frame is black
-      println("cyka");
-      
+      //println("cyka");
+
       while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) {
         //bulletPos.y += i;
         //bulletPos.add(i);
         bulletPos.x += 1;
         bulletPos.y += 1;
         println("adding direction...");
-        
+        println(bulletPos.x, bulletPos.y);
+
         if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {
           println("blyat");
+
+          dir.x = 0;
+          dir.y = 0;
+          
+          firedBullet = false;
           
           collision();
           break;
@@ -47,20 +54,22 @@ class Bullet {
       }
     }
   }
-  
+
 
   void collision() {
     println("HIT");
-    circle(bulletPos.x, bulletPos.y, 30);
-    pg.render(bulletPos.x, bulletPos.y);
-    //noLoop();
+    //circle(bulletPos.x, bulletPos.y, 30);
+    //pg.render(bulletPos.x, bulletPos.y);
+    noLoop();
   }
 
 
   void bulletUpdate() {
     pushMatrix();
+    println(bulletPos.x, bulletPos.y);
     bulletPos.add(dir);  //adds direction (which got a speed added) so bullet moves faster
     circle(bulletPos.x, bulletPos.y, 15);  //placeholder
+    println(bulletPos.x, bulletPos.y);
     popMatrix();
   }
 }

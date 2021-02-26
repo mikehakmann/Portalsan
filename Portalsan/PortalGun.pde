@@ -11,6 +11,7 @@ class PortalGun {
 
   void portalSpawn1() {
     if ( millis() - last_millis > 2000) {
+      b.firedBullet = true;
       b.fire();
       
       
