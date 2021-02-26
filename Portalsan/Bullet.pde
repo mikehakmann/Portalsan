@@ -31,11 +31,8 @@ class Bullet {
 
   void checkCollision() {
     if (get(int(bulletPos.x + dir.x), int(bulletPos.y + dir.y)) == -16777216) {  //if bullets pos in next frame is black
-      //println("cyka");
 
       while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) {
-        //bulletPos.y += i;
-        //bulletPos.add(i);
         bulletPos.x += (dir.x/10);  //tilføjer en smule til bulletPos
         bulletPos.y += (dir.y/10);  //så at vi kun lige præcis vil ramme en væg
         
@@ -54,18 +51,14 @@ class Bullet {
 
 
   void collision() { //<>//
-    pg.render(bulletPos.x, bulletPos.y+45);
+    pg.render(bulletPos.x, bulletPos.y);
     portalX1 = bulletPos.x;
-    portalY1 = bulletPos.y+20;
+    portalY1 = bulletPos.y;
   }
 
 
   void bulletUpdate() {
-    //pushMatrix();
-    //println(bulletPos.x, bulletPos.y);
     bulletPos.add(dir);  //adds direction (which got a speed added) so bullet moves faster
     circle(bulletPos.x, bulletPos.y, 15);  //placeholder
-    //println(bulletPos.x, bulletPos.y);
-    //popMatrix();
   }
 }

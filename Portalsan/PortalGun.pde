@@ -39,8 +39,8 @@ class PortalGun {
       b.firedBullet = true;
       b.fire();
 
-      portalX2 = mouseX;
-      portalY2 = mouseY;
+      //portalX2 = mouseX;
+      //portalY2 = mouseY;
       renderPortal2 = true;
 
       if (portalTimer < 0) {
