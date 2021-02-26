@@ -44,14 +44,13 @@ void draw() {
   p.movePlayer();
   p.render();
   p.rotateGun();
+  
   pg.render(portalX1, portalY1);
   pg.render2(portalX2, portalY2);
   
-  //b.fire();
+  b.checkCollision();
   b.bulletUpdate();
-
-
-
+  
   //println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
 }
 

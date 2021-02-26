@@ -25,6 +25,36 @@ class Bullet {
     dir.add(speed);
     popMatrix();
   }
+  
+  
+  void checkCollision() {
+    if (get(int(bulletPos.x + dir.x), int(bulletPos.y + dir.y)) == -16777216) {  //if bullets pos in next frame is black
+      println("cyka");
+      
+      while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) {
+        //bulletPos.y += i;
+        //bulletPos.add(i);
+        bulletPos.x += 1;
+        bulletPos.y += 1;
+        println("adding direction...");
+        
+        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {
+          println("blyat");
+          
+          collision();
+          break;
+        }
+      }
+    }
+  }
+  
+
+  void collision() {
+    println("HIT");
+    circle(bulletPos.x, bulletPos.y, 30);
+    pg.render(bulletPos.x, bulletPos.y);
+    //noLoop();
+  }
 
 
   void bulletUpdate() {
