@@ -11,6 +11,7 @@ class Bullet {
 
 
   void fire() {
+    
     bulletPos.x = p.pos.x;
     bulletPos.y = p.pos.y;
 
@@ -35,16 +36,12 @@ class Bullet {
       while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) {
         //bulletPos.y += i;
         //bulletPos.add(i);
-        bulletPos.x += 1;
-        bulletPos.y += 1;
-        println("adding direction...");
-        println(bulletPos.x, bulletPos.y);
-
-        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {
-          println("blyat");
-
-          dir.x = 0;
-          dir.y = 0;
+        bulletPos.x += (dir.x/10);  //tilføjer en smule til bulletPos
+        bulletPos.y += (dir.y/10);  //så at vi kun lige præcis vil ramme en væg
+        
+        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {  //når vi rammer en væg: //<>//
+          dir.x = 0;  //
+          dir.y = 0;  //
           
           firedBullet = false;
           
@@ -56,20 +53,19 @@ class Bullet {
   }
 
 
-  void collision() {
-    println("HIT");
-    //circle(bulletPos.x, bulletPos.y, 30);
-    //pg.render(bulletPos.x, bulletPos.y);
-    noLoop();
+  void collision() { //<>//
+    pg.render(bulletPos.x, bulletPos.y+45);
+    portalX1 = bulletPos.x;
+    portalY1 = bulletPos.y+20;
   }
 
 
   void bulletUpdate() {
-    pushMatrix();
-    println(bulletPos.x, bulletPos.y);
+    //pushMatrix();
+    //println(bulletPos.x, bulletPos.y);
     bulletPos.add(dir);  //adds direction (which got a speed added) so bullet moves faster
     circle(bulletPos.x, bulletPos.y, 15);  //placeholder
-    println(bulletPos.x, bulletPos.y);
-    popMatrix();
+    //println(bulletPos.x, bulletPos.y);
+    //popMatrix();
   }
 }

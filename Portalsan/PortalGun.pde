@@ -11,25 +11,33 @@ class PortalGun {
 
   void portalSpawn1() {
     if ( millis() - last_millis > 2000) {
+      portalX1 = -100;
+      portalY1 = 0;
+
       b.firedBullet = true;
       b.fire();
-      
-      
-      portalX1 = mouseX;
-      portalY1 = mouseY;
+
+
+      //portalX1 = mouseX;
+      //portalY1 = mouseY;
       renderPortal1 = true;
 
       if (portalTimer < 0) {
-        render(portalX1, portalY1);
+        //render(portalX1, portalY1);
         portalTimer = 2000;
       }
-      
+
       last_millis = millis();
     }
   }
 
   void portalSpawn2() {
     if ( millis() - last_millis > 2000) {
+      portalX2 = -100;
+      portalY2 = 0;
+      
+      b.firedBullet = true;
+      b.fire();
 
       portalX2 = mouseX;
       portalY2 = mouseY;
@@ -39,7 +47,7 @@ class PortalGun {
         render2(portalX2, portalY2);
         portalTimer = 2000;
       }
-      
+
       last_millis = millis();
     }
   }
