@@ -30,6 +30,8 @@ void setup() {
   portal1 = loadImage("Portal green.png");
   portal2 = loadImage("Portal Magenta.png");
   last_millis = millis();
+  
+  ellipseMode(CENTER);
 }
 
 
@@ -48,7 +50,10 @@ void draw() {
   pg.render(portalX1, portalY1);
   pg.render2(portalX2, portalY2);
   
-  b.checkCollision();
+  if (b.firedBullet) {
+    b.checkCollision();
+  }
+  
   b.bulletUpdate();
   
   //println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
