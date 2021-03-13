@@ -1,4 +1,4 @@
-class Bullet {
+class Bullet { //<>// //<>//
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
   float angle;
   boolean firedBullet = false, firedLeft = false, firedRight = false;
@@ -11,7 +11,7 @@ class Bullet {
 
 
   void updateBulletDir() {
-    
+
     bulletPos.x = p.pos.x;
     bulletPos.y = p.pos.y;
 
@@ -35,21 +35,21 @@ class Bullet {
       while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) {
         bulletPos.x += (dir.x/10);  //tilføjer en smule til bulletPos
         bulletPos.y += (dir.y/10);  //så at vi kun lige præcis vil ramme en væg
-        
-        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {  //når vi rammer en væg: //<>// //<>//
+
+        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {  //når vi rammer en væg: //<>//
           dir.x = 0;  //
           dir.y = 0;  //
-          
+
           firedBullet = false;
-          
+
           //following if-else is for placing the right portal
           if (b.firedLeft) {
             b.placePortal(1);
-          }
+          }//
           else if (b.firedRight) {
             b.placePortal(2);
           }
-          
+
           break;
         }
       }
@@ -59,14 +59,14 @@ class Bullet {
 
   void placePortal(int portal) { //when a portal should be placed:
     if (portal == 1) { //checks if the left (green) portal should be placed - based on the input
-      pg.portalX1 = bulletPos.x; //if so, sets the left (green) portals coords to be the bullet's
-      pg.portalY1 = bulletPos.y; //"
-    }
+      pg.portal1_X = bulletPos.x; //if so, sets the left (green) portals coords to be the bullet's
+      pg.portal1_Y = bulletPos.y; //"
+    }//
     else {
-      pg.portalX2 = bulletPos.x; //if not, then it must be the right (magenta) portal, 
-      pg.portalY2 = bulletPos.y; //that should be placed at the bullet's coords
+      pg.portal2_X = bulletPos.x; //if not, then it must be the right (magenta) portal, 
+      pg.portal2_Y = bulletPos.y; //that should be placed at the bullet's coords
     }
-  } //<>// //<>//
+  }
 
 
   void bulletUpdate() {

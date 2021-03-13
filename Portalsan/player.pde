@@ -6,12 +6,12 @@ class Player {
   //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
 
   float angle, targetAngle;
-  boolean checkLeft, checkRight = true;
+  boolean flipPlayer = false;
   boolean goLeft, goRight, jump = false;
   boolean portalUp, portalDown = false;
 
   Player() {
-    pos = new PVector(width*0.1, height*0.89);
+    pos = new PVector(m.spawnX, m.spawnY);
     vel = new PVector(5, 5);
     gravity = new PVector(0.0, 0.2);
     gravity.y = initialGravity.y;  // should maybe be tweaked - set these to around gravity=x and gravAcc=2x (that seems to look more realistic)
@@ -115,8 +115,8 @@ class Player {
     //======
 
     if (pos.y >= height) {  //checks if player is outside the screen
-      pos.x = spawnX;  // resets players position - basically respawns player
-      pos.y = spawnY;  // "
+      pos.x = m.spawnX;  // resets players position - basically respawns player
+      pos.y = m.spawnY;  // "
       gravity.y = initialGravity.y;  //reset gravity so player doesn't end up in the ground upon respawn
     }
   }

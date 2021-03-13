@@ -5,9 +5,6 @@ Player p;
 PortalGun pg;
 Maps m;
 PImage player, portalGun, tutorialStage, stage1, error, portal1, portal2;
-float spawnX, spawnY;
-boolean flipPlayer = false;
-int stage = 0;
 
 
 void setup() {
@@ -15,12 +12,12 @@ void setup() {
   background(155, 173, 183);
   frameRate(60);
   millis();
-  //ellipseMode(CENTER);  //temporary player model until actual player model is done.
 
   b = new Bullet();
-  p = new Player();
-  pg = new PortalGun();
   m = new Maps();
+  pg = new PortalGun();
+  p = new Player();
+
   player = loadImage("Steve.png");  //image is 30x30 pixels
   portalGun = loadImage("portal_gun.png");
   tutorialStage = loadImage("tutorial.png");
@@ -31,15 +28,16 @@ void setup() {
   pg.shootPortal_CD = millis();
   pg.tpToPortal1_CD = millis();
   pg.tpToPortal2_CD = millis();
-  
+
+  imageMode(CENTER);
   ellipseMode(CENTER);
 }
 
 
 
 void draw() {
-  imageMode(CENTER);
-  image(m.loadMap(stage), width/2, height/2);
+  m.checkMapChange();
+  image(m.loadMap(m.stage), width/2, height/2);
 
   fill(0);
 
@@ -47,19 +45,20 @@ void draw() {
   p.movePlayer();
   p.render();
   p.rotateGun();
-  
-  pg.render(pg.portalX1, pg.portalY1);
-  pg.render2(pg.portalX2, pg.portalY2);
+
+  pg.render(pg.portal1_X, pg.portal1_Y);
+  pg.render2(pg.portal2_X, pg.portal2_Y);
   pg.portalTP1();
   pg.portalTP2();
-  
+
   if (b.firedBullet) {
     b.collision();
   }
-  
+
   b.bulletUpdate();
-  
-  //println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
+
+  println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
+  println("playerX: " + p.pos.x + "  playerY: " + p.pos.y);
 }
 
 void mousePressed() {
