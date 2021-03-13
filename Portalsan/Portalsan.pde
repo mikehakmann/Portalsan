@@ -8,7 +8,6 @@ PImage player, portalGun, tutorialStage, stage1, error, portal1, portal2;
 float spawnX, spawnY;
 boolean flipPlayer = false;
 int stage = 0;
-int portalTimer = 2000;
 
 
 void setup() {
@@ -29,8 +28,9 @@ void setup() {
   error = loadImage("error.png");
   portal1 = loadImage("Portal green.png");
   portal2 = loadImage("Portal Magenta.png");
-  last_millis1 = millis();
-  last_millis2 = millis();
+  pg.shootPortal_CD = millis();
+  pg.tpToPortal1_CD = millis();
+  pg.tpToPortal2_CD = millis();
   
   ellipseMode(CENTER);
 }
@@ -48,13 +48,13 @@ void draw() {
   p.render();
   p.rotateGun();
   
-  pg.render(portalX1, portalY1);
-  pg.render2(portalX2, portalY2);
+  pg.render(pg.portalX1, pg.portalY1);
+  pg.render2(pg.portalX2, pg.portalY2);
   pg.portalTP1();
   pg.portalTP2();
   
   if (b.firedBullet) {
-    b.checkCollision();
+    b.collision();
   }
   
   b.bulletUpdate();
@@ -64,17 +64,25 @@ void draw() {
 
 void mousePressed() {
   if (mouseButton == LEFT) {
-    pg.portalSpawn1();
+    b.firedLeft = true;
+    b.firedRight = false;
+    pg.firePortal(1);
   }
   if (mouseButton == RIGHT) {
-    pg.portalSpawn2();
+    b.firedRight = true;
+    b.firedLeft = false;
+    pg.firePortal(2);
   }
 }
+
 void keyPressed() {
   p.playerSetMove(keyCode, true);
 
   if (keyCode == ' ') {
     p.jump = true;
+  }
+  if (keyCode == SHIFT) {
+    pg.haltTP = true;
   }
 }
 
@@ -83,5 +91,8 @@ void keyReleased() {
 
   if (keyCode == ' ') {
     p.jump = false;
+  }
+  if (keyCode == SHIFT) {
+    pg.haltTP = false;
   }
 }
