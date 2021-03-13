@@ -1,5 +1,6 @@
 import processing.sound.*;
 
+Bullet b;
 Player p;
 PortalGun pg;
 Maps m;
@@ -7,7 +8,7 @@ PImage player, portalGun, tutorialStage, stage1, error, portal1, portal2;
 float spawnX, spawnY;
 boolean flipPlayer = false;
 int stage = 0;
-int   portalTimer = 2000;
+int portalTimer = 2000;
 
 
 void setup() {
@@ -17,6 +18,7 @@ void setup() {
   millis();
   //ellipseMode(CENTER);  //temporary player model until actual player model is done.
 
+  b = new Bullet();
   p = new Player();
   pg = new PortalGun();
   m = new Maps();
@@ -27,9 +29,10 @@ void setup() {
   error = loadImage("error.png");
   portal1 = loadImage("Portal green.png");
   portal2 = loadImage("Portal Magenta.png");
-last_millis1 = millis();
-last_millis2 = millis();
-
+  last_millis1 = millis();
+  last_millis2 = millis();
+  
+  ellipseMode(CENTER);
 }
 
 
@@ -39,28 +42,33 @@ void draw() {
   image(m.loadMap(stage), width/2, height/2);
 
   fill(0);
-println(portalX1);
-println(p.pos.x);
 
   p.verticleMovement();
   p.movePlayer();
   p.render();
   p.rotateGun();
-  //pg.portalSpawn();
+  
   pg.render(portalX1, portalY1);
-  pg.render2(portalX2,portalY2);
+  pg.render2(portalX2, portalY2);
   pg.portalTP1();
   pg.portalTP2();
+  
+  if (b.firedBullet) {
+    b.checkCollision();
+  }
+  
+  b.bulletUpdate();
+  
   //println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
 }
 
-void mousePressed(){
+void mousePressed() {
   if (mouseButton == LEFT) {
-pg.portalSpawn1();
+    pg.portalSpawn1();
   }
-   if (mouseButton == RIGHT){
-   pg.portalSpawn2();
-   }
+  if (mouseButton == RIGHT) {
+    pg.portalSpawn2();
+  }
 }
 void keyPressed() {
   p.playerSetMove(keyCode, true);
