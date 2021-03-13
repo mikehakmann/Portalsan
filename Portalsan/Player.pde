@@ -1,5 +1,6 @@
 class Player {
   final PVector initialGravity = new PVector(0.0, 0.2);  //to reset gravity later on
+  final PVector maxGravity = new PVector(0.0, 20.0);
   PVector pos, vel, gravity, gravAcc, jumpAcc;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
@@ -8,7 +9,7 @@ class Player {
   boolean checkLeft, checkRight = true;
   boolean goLeft, goRight, jump = false;
   boolean portalUp, portalDown = false;
-  
+
   Player() {
     pos = new PVector(width*0.1, height*0.89);
     vel = new PVector(5, 5);
@@ -34,17 +35,22 @@ class Player {
 
 
   void verticleMovement() {
-    if (get(int(pos.x), int(pos.y + 15)) == -16777216  &&  jump) {  //if player is on the ground/platform (i.e. not falling)
+    if (get(int(pos.x), int(pos.y + 15)) == -16777216  &&  jump) {  //if player is on the ground/platform (i.e. not falling) and jumps:
       gravity.y = jumpAcc.y;
       pos.add(gravity);
       jump = false;
     }//
     else if (get(int(pos.x), int(pos.y + 15)) != -16777216) {  //if the color right at the bottom edge of the player is NOT black: add gravity
-      gravity.add(gravAcc);  //for the acceleration-like effect of gravity
+      if (gravity.y < maxGravity.y) {
+        gravity.add(gravAcc);  //for the acceleration-like effect of gravity
+      }
+      if (gravity.y > maxGravity.y) {
+        gravity.y = maxGravity.y;
+      }
       pos.add(gravity);
     }//
-    else {
-      gravity.y = initialGravity.y;  //to reset gravity
+    else { //if it *is* black
+      gravity.y = initialGravity.y;  //reset the gravity
     }
 
     if ((get(int(pos.x), int((pos.y + 15) + gravity.y)))  == -16777216) {  // "(pos.y + 25) + gravity.y" is (almost) player's pos in the next frame, when falling
@@ -61,7 +67,7 @@ class Player {
   boolean playerSetMove(int k, boolean b) {
     switch (k) {              // "
     case + 'A':               // Player can only move sideways
-      return goLeft = b;      // "
+      return goLeft = b;      // therefore only 'A' and 'D' are checked
 
     case + 'D':               // "
       return goRight = b;     // "
@@ -75,8 +81,7 @@ class Player {
     //if (get(int(pos.x + 15), int(pos.y)) != -16777216  ||  get(int(pos.x - 15), int(pos.y)) != -16777216) {
     //  pos.x = constrain(pos.x + vel.x * (int(goRight) - int(goLeft)), 11, width  - 11);
     //}
-    if (get(int(pos.x + 15), int(pos.y - 15)) != -16777216 ||
-      get(int(pos.x + 15), int(pos.y + 15)) != -16777216) {
+    if (get(int(pos.x - 15), int(pos.y)) != -16777216 || get(int(pos.x + 15), int(pos.y)) != -16777216) {
       if (get(int(pos.x + 15), int(pos.y)) != -16777216) {
         pos.x = constrain(pos.x + vel.x * (int(goRight)), 11, width  - 11);
       }

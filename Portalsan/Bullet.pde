@@ -1,7 +1,7 @@
 class Bullet {
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
   float angle;
-  boolean firedBullet = false;
+  boolean firedBullet = false, firedLeft = false, firedRight = false;
 
   Bullet() {
     bulletPos = new PVector(100, 100);
@@ -29,7 +29,7 @@ class Bullet {
   }
 
 
-  void checkCollision() {
+  void collision() { //both checks for and perfoms collision
     if (get(int(bulletPos.x + dir.x), int(bulletPos.y + dir.y)) == -16777216) {  //if bullets pos in next frame is black
 
       while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) {
@@ -42,7 +42,14 @@ class Bullet {
           
           firedBullet = false;
           
-          collision();
+          //following if-else is for placing the right portal
+          if (b.firedLeft) {
+            b.placePortal(1);
+          }
+          else if (b.firedRight) {
+            b.placePortal(2);
+          }
+          
           break;
         }
       }
@@ -50,11 +57,16 @@ class Bullet {
   }
 
 
-  void collision() { //<>//
-    pg.render(bulletPos.x, bulletPos.y);
-    portalX1 = bulletPos.x;
-    portalY1 = bulletPos.y;
-  }
+  void placePortal(int portal) { //when a portal should be placed:
+    if (portal == 1) { //checks if the left (green) portal should be placed - based on the input
+      pg.portalX1 = bulletPos.x; //if so, sets the left (green) portals coords to be the bullet's
+      pg.portalY1 = bulletPos.y; //"
+    }
+    else {
+      pg.portalX2 = bulletPos.x; //if not, then it must be the right (magenta) portal, 
+      pg.portalY2 = bulletPos.y; //that should be placed at the bullet's coords
+    }
+  } //<>//
 
 
   void bulletUpdate() {
