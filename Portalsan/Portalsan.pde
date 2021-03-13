@@ -8,7 +8,6 @@ PImage player, portalGun, tutorialStage, stage1, error, portal1, portal2;
 float spawnX, spawnY;
 boolean flipPlayer = false;
 int stage = 0;
-int portalTimer = 2000;
 
 
 void setup() {
@@ -75,11 +74,15 @@ void mousePressed() {
     pg.firePortal(2);
   }
 }
+
 void keyPressed() {
   p.playerSetMove(keyCode, true);
 
   if (keyCode == ' ') {
     p.jump = true;
+  }
+  if (keyCode == SHIFT) {
+    pg.haltTP = true;
   }
 }
 
@@ -88,5 +91,8 @@ void keyReleased() {
 
   if (keyCode == ' ') {
     p.jump = false;
+  }
+  if (keyCode == SHIFT) {
+    pg.haltTP = false;
   }
 }

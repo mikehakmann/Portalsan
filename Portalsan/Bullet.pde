@@ -10,7 +10,7 @@ class Bullet {
   }
 
 
-  void fire() {
+  void updateBulletDir() {
     
     bulletPos.x = p.pos.x;
     bulletPos.y = p.pos.y;
@@ -36,7 +36,7 @@ class Bullet {
         bulletPos.x += (dir.x/10);  //tilføjer en smule til bulletPos
         bulletPos.y += (dir.y/10);  //så at vi kun lige præcis vil ramme en væg
         
-        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {  //når vi rammer en væg: //<>//
+        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {  //når vi rammer en væg: //<>// //<>//
           dir.x = 0;  //
           dir.y = 0;  //
           
@@ -66,7 +66,7 @@ class Bullet {
       pg.portalX2 = bulletPos.x; //if not, then it must be the right (magenta) portal, 
       pg.portalY2 = bulletPos.y; //that should be placed at the bullet's coords
     }
-  } //<>//
+  } //<>// //<>//
 
 
   void bulletUpdate() {
