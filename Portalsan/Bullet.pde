@@ -1,7 +1,9 @@
-class Bullet {
+class Bullet { //<>//
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
   float angle;
   boolean firedBullet = false, firedLeft = false, firedRight = false;
+  int north, south, east, west;
+  int notNorth, notSout, notEast, notWest;
 
   Bullet() {
     bulletPos = new PVector(100, 100);
@@ -11,7 +13,6 @@ class Bullet {
 
 
   void updateBulletDir() {
-    
     bulletPos.x = p.pos.x;
     bulletPos.y = p.pos.y;
 
@@ -32,45 +33,62 @@ class Bullet {
   void collision() { //both checks for and perfoms collision
     if (get(int(bulletPos.x + dir.x), int(bulletPos.y + dir.y)) == -16777216) {  //if bullets pos in next frame is black
 
-      while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) {
-        bulletPos.x += (dir.x/10);  //tilføjer en smule til bulletPos
-        bulletPos.y += (dir.y/10);  //så at vi kun lige præcis vil ramme en væg
-        
-        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {  //når vi rammer en væg: //<>// //<>//
-          dir.x = 0;  //
-          dir.y = 0;  //
+      while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) { //if bullet hits a wall next frame:
+        bulletPos.x += (dir.x/10);  //adds a little to bulletPos
+        bulletPos.y += (dir.y/10);  //so it only barely hits the wall
+
+        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {  //when a wall is hit: //<>//
+          dir.x = 0;  //makes the direction 0 to stop movement
+          dir.y = 0;  //"
+
+          firedBullet = false; //bullet has collided and should therefore stop
+          determineRotation();
           
-          firedBullet = false;
-          
-          //following if-else is for placing the right portal
+          //following if-else is for placing the correct portal - determined in mousePressed()
           if (b.firedLeft) {
             b.placePortal(1);
-          }
-          else if (b.firedRight) {
+          }//
+          else {
             b.placePortal(2);
           }
-          
-          break;
+
+          break; //break out of while-loop since bullet has collided
         }
       }
+    }
+  }
+  
+  
+  void determineRotation() {
+    north = get(int(bulletPos.x), int(bulletPos.y - 5));
+    south = get(int(bulletPos.x), int(bulletPos.y + 5));
+    east = get(int(bulletPos.x + 5), int(bulletPos.y));
+    west = get(int(bulletPos.x - 5), int(bulletPos.y));
+    notWest = (north + south + east)/3;
+    
+    if (west == -6574665 && notWest == -16777216) {
+      println("west is clear, but others are blocked");
+    }
+    else {
+      println("west is NOT clear");
     }
   }
 
 
   void placePortal(int portal) { //when a portal should be placed:
     if (portal == 1) { //checks if the left (green) portal should be placed - based on the input
-      pg.portalX1 = bulletPos.x; //if so, sets the left (green) portals coords to be the bullet's
-      pg.portalY1 = bulletPos.y; //"
-    }
+      pg.portal1_X = bulletPos.x; //if so, sets the left (green) portals coords to be the bullet's
+      pg.portal1_Y = bulletPos.y; //"
+    }//
     else {
-      pg.portalX2 = bulletPos.x; //if not, then it must be the right (magenta) portal, 
-      pg.portalY2 = bulletPos.y; //that should be placed at the bullet's coords
+      pg.portal2_X = bulletPos.x; //if not, then it must be the right (magenta) portal, 
+      pg.portal2_Y = bulletPos.y; //that should be placed at the bullet's coords
     }
-  } //<>// //<>//
+  }
 
 
   void bulletUpdate() {
-    bulletPos.add(dir);  //adds direction (which got a speed added) so bullet moves faster
-    circle(bulletPos.x, bulletPos.y, 15);  //placeholder
+    bulletPos.add(dir);  //adds direction (which got a speed added) so bullet moves in desired direction
+    circle(bulletPos.x, bulletPos.y, 15);  //placeholder (or not - bullet might stay like this)
   }
 }
