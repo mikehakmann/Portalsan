@@ -1,5 +1,7 @@
 class Maps {
   int stage = 0;
+  int black = -16777216;  //the color 'black' as an int (obtained with get())
+  int bgColor = -6574665; //the color of the background (blue/cyan-ish) as an int
   float spawnX, spawnY;
 
   Maps() {
