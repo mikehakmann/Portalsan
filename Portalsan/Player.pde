@@ -3,26 +3,26 @@ class Player {
   final PVector maxGravity = new PVector(0.0, 20.0);
   PVector pos, vel, gravity, gravAcc, jumpAcc;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
-  //gravitational (and in this case also jumping) acceleration makes "gravity" seem like *actual* gravity with an acceleration
+  //gravitational (and in this case also jumping-) acceleration makes "gravity" seem like *actual* gravity with an acceleration-like effect
 
   float angle, targetAngle;
-  boolean checkLeft, checkRight = true;
+  boolean flipPlayer = false;
   boolean goLeft, goRight, jump = false;
-  boolean portalUp, portalDown = false;
+  //boolean portalUp, portalDown = false;
 
   Player() {
-    pos = new PVector(width*0.1, height*0.89);
+    pos = new PVector(m.spawnX, m.spawnY);
     vel = new PVector(5, 5);
-    gravity = new PVector(0.0, 0.2);
-    gravity.y = initialGravity.y;  // should maybe be tweaked - set these to around gravity=x and gravAcc=2x (that seems to look more realistic)
-    gravAcc = new PVector(0, 0.4);  // and set them between 0.1 and 0.5 (less is too slow, and more is too fast)
-    jumpAcc = new PVector(0, -5);  //
+    gravity = new PVector(0.0, 0.2); //should maybe be tweaked - set these to around gravity=x and gravAcc=2x (that seems to look more realistic)
+    gravity.y = initialGravity.y;
+    gravAcc = new PVector(0, 0.4);   //and set them between 0.1 and 0.5 (less is too slow, and more is too fast)
+    jumpAcc = new PVector(0, -5); //jumping goes upwards, so it's negative in a Processing coord-system
   }
 
 
   void render() {
     pushMatrix();
-    translate(pos.x, pos.y);
+    translate(pos.x, pos.y); //translates to player's pos, so scaling to flip works better
     if (!flipPlayer) {
       scale(1, 1);
     }//
@@ -41,13 +41,13 @@ class Player {
       jump = false;
     }//
     else if (get(int(pos.x), int(pos.y + 15)) != -16777216) {  //if the color right at the bottom edge of the player is NOT black: add gravity
-      if (gravity.y < maxGravity.y) {
-        gravity.add(gravAcc);  //for the acceleration-like effect of gravity
+      if (gravity.y < maxGravity.y) { //if gravity is below the limit:
+        gravity.add(gravAcc);  //add the acceleration to gravity to give an acceleration-like effect
       }
-      if (gravity.y > maxGravity.y) {
-        gravity.y = maxGravity.y;
+      if (gravity.y > maxGravity.y) { //if gravity is aboce the limit:
+        gravity.y = maxGravity.y; //set gravity right *at* the limit
       }
-      pos.add(gravity);
+      pos.add(gravity); //add gravity to player's position
     }//
     else { //if it *is* black
       gravity.y = initialGravity.y;  //reset the gravity
@@ -91,34 +91,15 @@ class Player {
       }
     }
 
-    //====== Vlad's kode
-    //float temp=13;
-    //for (int i = -15; i<15; i++) {
-    //  if (get(int(pos.x + temp), int(pos.y + i)) == -16777216) {
-    //    checkRight=false;
-    //  }
-    //  if (get(int(pos.x - temp), int(pos.y + i)) == -16777216) {
-    //    checkLeft=false;
-    //  }
-    //}
-
-    //if (get(int(pos.x + temp), int(pos.y)) != -16777216 && checkRight) {
-    //  pos.x = constrain(pos.x + vel.x * (int(goRight)), 11, width  - 11);
-    //}
-
-
-    //if (get(int(pos.x - temp), int(pos.y)) != -16777216 && checkLeft) {
-    //  pos.x = constrain(pos.x + vel.x * (- int(goLeft)), 11, width  - 11);
-    //}
-    //checkRight=true;
-    //checkLeft=true;
-    //======
-
-    if (pos.y >= height) {  //checks if player is outside the screen
-      pos.x = spawnX;  // resets players position - basically respawns player
-      pos.y = spawnY;  // "
-      gravity.y = initialGravity.y;  //reset gravity so player doesn't end up in the ground upon respawn
+    if (pos.x >= width ||pos.x <= 0 || pos.y >= height || pos.y <= 0) {  //checks if player is outside the screen
+    respawnPlayer();
     }
+  }
+
+  void respawnPlayer() {
+    pos.x = m.spawnX;  // resets players position - basically respawns player
+    pos.y = m.spawnY;  // "
+    gravity.y = initialGravity.y;  //reset gravity so player doesn't end up in the ground upon respawn
   }
 
 
@@ -126,36 +107,33 @@ class Player {
     angle = atan2(mouseY - p.pos.y, mouseX - p.pos.x);  //find angle of mouse pos relative to player's pos
 
     float dir = (angle - targetAngle) / TWO_PI;
-    dir -= round( dir );
+    dir -= round(dir);
     dir *= TWO_PI;
 
     targetAngle += dir;
 
     noFill();
-    stroke( 255 );
+    stroke(255);
     pushMatrix();
     translate(p.pos.x, p.pos.y);
-    rotate( targetAngle ); 
+    rotate(targetAngle); 
 
     if (angle>=-PI/2 && angle <= PI/2) {  //if-else statement for flipping Portal Gun if mouse is above/below player
       scale(-1, 1);
-      //println("højre");
       flipPlayer = true;
     }//
     else {
       scale(-1, -1);
-      //println("venstre");
       flipPlayer = false;
     }
 
-    if (angle>= PI/4 && angle <= (3.0 / 4) * Math.PI) {
-      //println("ned");
-      portalDown = true;
-    }
-    if (angle<= -PI/4 && angle >= (-3.0 / 4) * Math.PI) {
-      //println("op");
-      portalUp = true;
-    }
+    //if (angle>= PI/4 && angle <= (3.0 / 4) * Math.PI) {
+    //  portalDown = true;
+    //}
+    //if (angle<= -PI/4 && angle >= (-3.0 / 4) * Math.PI) {
+    //  portalUp = true;
+    //}
+
     image(portalGun, 0, 0);
     popMatrix();
   }
