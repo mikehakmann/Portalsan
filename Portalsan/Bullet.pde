@@ -1,6 +1,6 @@
 class Bullet { //<>//
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
-  float angle, rotation;
+  float angle;
   boolean firedBullet = false, firedLeft = false, firedRight = false;
   int north, south, east, west; //for int-colors of each direction around the bullet
   int notNorth, notSouth, notEast, notWest; //for int-colors of all, except 1 specific direction around the bullet
@@ -42,15 +42,14 @@ class Bullet { //<>//
           dir.y = 0;  //"
 
           firedBullet = false; //bullet has collided and should therefore stop
-          rotation = determineRotation();
           
           //following if-else is for placing the correct portal - determined in mousePressed()
           if (firedLeft) {
-            pg.portal1Angle = rotation;
+            pg.portal1Angle = determineRotation(1);
             placePortal(1);
           }//
           else {
-            pg.portal2Angle = rotation;
+            pg.portal2Angle = determineRotation(2);
             placePortal(2);
           }
 
@@ -61,17 +60,24 @@ class Bullet { //<>//
   }
   
   
-  float determineRotation() {
+  float determineRotation(int portal) { //function for determining angle to rotate portals
     north = get(int(bulletPos.x), int(bulletPos.y - 5));
     south = get(int(bulletPos.x), int(bulletPos.y + 5));
     east = get(int(bulletPos.x + 5), int(bulletPos.y));
     west = get(int(bulletPos.x - 5), int(bulletPos.y));
-    notNorth = (south + east+  west)/3; //they should all be either black, so finding sum and dividing by 3 gives the int for black
+    notNorth = (south + east + west)/3; //they should all be either black, so finding sum and dividing by 3 gives the int for black
     notSouth = (north + east + west)/3;
     notEast = (north + south + west)/3;
     notWest = (north + south + east)/3;
     
     if (north == m.bgColor && notNorth == m.black) {
+      //if (portal == 1) {
+        p.tpPosX = bulletPos.x;
+        p.tpPosY = bulletPos.y - 15;
+      //}//
+      //else {
+        
+      //}
       return -(PI/2);
     }
     else if (south == m.bgColor && notSouth == m.black) {

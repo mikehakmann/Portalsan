@@ -44,8 +44,8 @@ class PortalGun {
         if (p.pos.y >= portal1_Y - n  &&  p.pos.y <= portal1_Y + n) { //"
           tpToPortal2_CD = millis(); //functionally reset cooldown for the *OTHER* portal (portal 2), because player will TP to it
           tpToPortal1_CD = 0; //resets cooldown for this portal
-          p.pos.x = portal2_X; //make player's position be the other portal (i.e. Teleport player)
-          p.pos.y = portal2_Y; //"
+          p.pos.x = p.tpPosX; //make player's position be the other portal (i.e. Teleport player)
+          p.pos.y = p.tpPosY; //"
         }
       }
     }

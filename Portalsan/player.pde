@@ -5,7 +5,7 @@ class Player {
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping-) acceleration makes "gravity" seem like *actual* gravity with an acceleration-like effect
 
-  float angle, targetAngle;
+  float angle, targetAngle, tpPosX, tpPosY;
   boolean flipPlayer = false;
   boolean goLeft, goRight, jump = false;
   //boolean portalUp, portalDown = false;
