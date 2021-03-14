@@ -1,15 +1,16 @@
-import processing.sound.*;
+import processing.sound.*; //for sound, if we decide to implement some
+import gifAnimation.*; //for the portal gifs
 
 Bullet b;
 Player p;
 PortalGun pg;
 Maps m;
-PImage player, portalGun, tutorialStage, stage1, error, portal1, portal2;
+PImage player, portalGun, tutorialStage, stage1, error;
+Gif portal1, portal2; //the portals are gifs - "portal1" is green and "portal2" is magenta
 
 
 void setup() {
   size(802, 602);
-  background(155, 173, 183);
   frameRate(60);
   millis();
 
@@ -23,8 +24,12 @@ void setup() {
   tutorialStage = loadImage("tutorial.png");
   stage1 = loadImage("stage_1.png");
   error = loadImage("error.png");
-  portal1 = loadImage("Portal green.png");
-  portal2 = loadImage("Portal Magenta.png");
+  
+  portal1 = new Gif(this, "PortalGreenGif.gif");   //initializes the portal gifs
+  portal2 = new Gif(this, "PortalMagentaGif.gif"); //"
+  portal1.loop(); //makes the portal gifs loop
+  portal2.loop(); //"
+  
   pg.shootPortal_CD = millis();
   pg.tpToPortal1_CD = millis();
   pg.tpToPortal2_CD = millis();
@@ -36,36 +41,33 @@ void setup() {
 
 
 void draw() {
-  m.checkMapChange();
-  image(m.loadMap(m.stage), width/2, height/2);
+  m.checkMapChange(); //to change the stage, if player is within certain bounds
+  image(m.loadMap(m.stage), width/2, height/2); //draws the map, based on 'stage'
 
-  fill(0);
+  //if a bullet is fired, checks and performs collision and updates bullet
+  if (b.firedBullet) { //called before everything else, since bullets rely heavily on background colors
+    b.collision();
+    b.bulletUpdate();
+  }
 
   p.verticleMovement();
   p.movePlayer();
   p.render();
-  p.rotateGun();
+  p.rotateGun(); //notice gun is drawn *after* checking color around player for collision (that way it doesn't interfere)
 
-  pg.render(pg.portal1_X, pg.portal1_Y);
-  pg.render2(pg.portal2_X, pg.portal2_Y);
-  pg.portalTP1();
-  pg.portalTP2();
-
-  if (b.firedBullet) {
-    b.collision();
+  pg.renderPortal1(pg.portal1_X, pg.portal1_Y); //renders portals
+  pg.renderPortal2(pg.portal2_X, pg.portal2_Y); //"
+  if (pg.renderPortal1 && pg.renderPortal2) { //if both portals are placed, then allows for teleporting between them
+    pg.portalTP1(); //func for teleporting *from* portal 1
+    pg.portalTP2(); //func for teleporting *from* portal 2
   }
-
-  b.bulletUpdate();
-
-  println("mouseX: " + mouseX + "   mouseY: " + mouseY);  //test-kode til at finde koordinater (cirka-mål)
-  println("playerX: " + p.pos.x + "  playerY: " + p.pos.y);
 }
 
 void mousePressed() {
   if (mouseButton == LEFT) {
-    b.firedLeft = true;
-    b.firedRight = false;
-    pg.firePortal(1);
+    b.firedLeft = true; //left clicked, so left portal should be fired
+    b.firedRight = false; //right portal should *not* be fired
+    pg.firePortal(1); //fire the correct portal
   }
   if (mouseButton == RIGHT) {
     b.firedRight = true;
@@ -82,6 +84,10 @@ void keyPressed() {
   }
   if (keyCode == SHIFT) {
     pg.haltTP = true;
+  }
+  if (keyCode == 'R') { //pressing 'R' resets portals
+    pg.resetPortals(1);
+    pg.resetPortals(2);
   }
 }
 

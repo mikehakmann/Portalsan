@@ -1,11 +1,12 @@
 class PortalGun {
   float portal1_X, portal1_Y, portal2_X, portal2_Y;
+  float portal1Angle, portal2Angle;
   boolean renderPortal1, renderPortal2;
   boolean haltTP = false; //holding 'shift' halts teleporting
 
   int shootPortal_CD; //a cooldown on shooting portals
-  int tpToPortal1_CD; //a cooldown on teleporting from portal 1
-  int tpToPortal2_CD; //a cooldown on teleporting from portal 2
+  int tpToPortal1_CD; //a cooldown on teleporting *from* portal 1
+  int tpToPortal2_CD; //a cooldown on teleporting *from* portal 2
   
   void resetPortals(int portal) { //"removes" portals by placing them outside the player's view
     if (portal == 1) {
@@ -13,7 +14,8 @@ class PortalGun {
       portal1_Y = 0;
     }
     if (portal == 2) {
-      
+      portal2_X = -100;
+      portal2_Y = 0;
     }
   }
 
@@ -23,14 +25,14 @@ class PortalGun {
       b.updateBulletDir(); //updates the direction, the bullet should travel
 
       if (portal == 1) { //if portal 1 (green) was fired:
-        renderPortal1 = true; //to let the portal render (once bullet hits something)
-        resetPortals(1);
+        renderPortal1 = true; //to let the portal render later if bullet hits something
+        resetPortals(1); //resets portal, so it looks like it disappears
       }//
       else { //if not portal 1, then it must be portal 2 (magenta)
-        renderPortal2 = true; //to let portal 2 be rendered once bullet collides
+        renderPortal2 = true; //to let portal 2 be rendered if bullet hits something
         resetPortals(2);
       }
-      shootPortal_CD = millis();
+      shootPortal_CD = millis(); //to reset/restart cooldown time
     }
   }
 
@@ -66,14 +68,14 @@ class PortalGun {
   }
 
 
-  void render(float portalX, float portalY) {
+  void renderPortal1(float portalX, float portalY) { //simply renders portal if it should be (i.e. has been fired)
     if (renderPortal1 == true) {
       image(portal1, portalX, portalY);
     }
   }
 
 
-  void render2(float portalX, float portalY) {
+  void renderPortal2(float portalX, float portalY) {
     if (renderPortal2 == true) {
       image(portal2, portalX, portalY);
     }
