@@ -1,9 +1,9 @@
 class Bullet { //<>//
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
-  float angle;
+  float angle, rotation;
   boolean firedBullet = false, firedLeft = false, firedRight = false;
-  int north, south, east, west;
-  int notNorth, notSout, notEast, notWest;
+  int north, south, east, west; //for int-colors of each direction around the bullet
+  int notNorth, notSouth, notEast, notWest; //for int-colors of all, except 1 specific direction around the bullet
 
   Bullet() {
     bulletPos = new PVector(100, 100);
@@ -31,25 +31,27 @@ class Bullet { //<>//
 
 
   void collision() { //both checks for and perfoms collision
-    if (get(int(bulletPos.x + dir.x), int(bulletPos.y + dir.y)) == -16777216) {  //if bullets pos in next frame is black
+    if (get(int(bulletPos.x + dir.x), int(bulletPos.y + dir.y)) == m.black) {  //if bullets pos in next frame is black
 
-      while (get(int(bulletPos.x), int(bulletPos.y)) != -16777216) { //if bullet hits a wall next frame:
+      while (get(int(bulletPos.x), int(bulletPos.y)) != m.black) { //if bullet hits a wall next frame:
         bulletPos.x += (dir.x/10);  //adds a little to bulletPos
         bulletPos.y += (dir.y/10);  //so it only barely hits the wall
 
-        if (get(int(bulletPos.x), int(bulletPos.y)) == -16777216) {  //when a wall is hit: //<>//
+        if (get(int(bulletPos.x), int(bulletPos.y)) == m.black) {  //when a wall is hit: //<>//
           dir.x = 0;  //makes the direction 0 to stop movement
           dir.y = 0;  //"
 
           firedBullet = false; //bullet has collided and should therefore stop
-          determineRotation();
+          rotation = determineRotation();
           
           //following if-else is for placing the correct portal - determined in mousePressed()
-          if (b.firedLeft) {
-            b.placePortal(1);
+          if (firedLeft) {
+            pg.portal1Angle = rotation;
+            placePortal(1);
           }//
           else {
-            b.placePortal(2);
+            pg.portal2Angle = rotation;
+            placePortal(2);
           }
 
           break; //break out of while-loop since bullet has collided
@@ -59,19 +61,29 @@ class Bullet { //<>//
   }
   
   
-  void determineRotation() {
+  float determineRotation() {
     north = get(int(bulletPos.x), int(bulletPos.y - 5));
     south = get(int(bulletPos.x), int(bulletPos.y + 5));
     east = get(int(bulletPos.x + 5), int(bulletPos.y));
     west = get(int(bulletPos.x - 5), int(bulletPos.y));
+    notNorth = (south + east+  west)/3; //they should all be either black, so finding sum and dividing by 3 gives the int for black
+    notSouth = (north + east + west)/3;
+    notEast = (north + south + west)/3;
     notWest = (north + south + east)/3;
     
-    if (west == -6574665 && notWest == -16777216) {
-      println("west is clear, but others are blocked");
+    if (north == m.bgColor && notNorth == m.black) {
+      return -(PI/2);
     }
-    else {
-      println("west is NOT clear");
+    else if (south == m.bgColor && notSouth == m.black) {
+      return PI/2;
     }
+    else if (east == m.bgColor && notEast == m.black) {
+      return PI;
+    }
+    else if (west == m.bgColor && notWest == m.black) {
+      return 0.0;
+    }
+    return 0.0;
   }
 
 

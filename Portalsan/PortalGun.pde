@@ -48,7 +48,6 @@ class PortalGun {
           p.pos.y = portal2_Y; //"
         }
       }
-      tpToPortal1_CD = millis();
     }
   }
 
@@ -62,7 +61,6 @@ class PortalGun {
           p.pos.x = portal1_X;
           p.pos.y = portal1_Y;
         }
-        tpToPortal2_CD = millis();
       }
     }
   }
@@ -70,14 +68,22 @@ class PortalGun {
 
   void renderPortal1(float portalX, float portalY) { //simply renders portal if it should be (i.e. has been fired)
     if (renderPortal1 == true) {
-      image(portal1, portalX, portalY);
+      pushMatrix();
+      translate(portalX, portalY);
+      rotate(portal1Angle);
+      image(portal1, 0, 0);
+      popMatrix();
     }
   }
 
 
   void renderPortal2(float portalX, float portalY) {
     if (renderPortal2 == true) {
-      image(portal2, portalX, portalY);
+      pushMatrix();
+      translate(portalX, portalY);
+      rotate(portal2Angle);
+      image(portal2, 0, 0);
+      popMatrix();
     }
   }
 }
