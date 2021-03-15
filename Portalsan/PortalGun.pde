@@ -9,28 +9,43 @@ class PortalGun {
   int tpToPortal2_CD; //a cooldown on teleporting *from* portal 2
   
   void resetPortals(int portal) { //"removes" portals by placing them outside the player's view
-    if (portal == 1) {
-      portal1_X = -100;
-      portal1_Y = 0;
-    }
-    if (portal == 2) {
-      portal2_X = -100;
-      portal2_Y = 0;
+    switch(portal) { //a switch-statement to make things go quicker
+      case 0:
+        renderPortal1 = false;
+        portal1_X = -100;
+        portal1_Y = 0;
+        
+        renderPortal2 = false;
+        portal2_X = -100;
+        portal2_Y = 0;
+        break;
+        
+      case 1:
+        renderPortal1 = false;
+        portal1_X = -100;
+        portal1_Y = 0;
+        break;
+        
+      case 2:
+        renderPortal2 = false;
+        portal2_X = -100;
+        portal2_Y = 0;
+        break;
     }
   }
 
   void firePortal(int portal) {
-    if (millis() - shootPortal_CD > 2000) { //if the cooldown time for shooting a portal has passed
+    if (millis() - shootPortal_CD > 1500) { //if the cooldown time for shooting a portal has passed
       b.firedBullet = true; //basically enables collision for the bullet (see void draw())
       b.updateBulletDir(); //updates the direction, the bullet should travel
 
       if (portal == 1) { //if portal 1 (green) was fired:
-        renderPortal1 = true; //to let the portal render later if bullet hits something
         resetPortals(1); //resets portal, so it looks like it disappears
+        renderPortal1 = true; //to let the portal render later if bullet hits something
       }//
       else { //if not portal 1, then it must be portal 2 (magenta)
-        renderPortal2 = true; //to let portal 2 be rendered if bullet hits something
         resetPortals(2);
+        renderPortal2 = true; //to let portal 2 be rendered if bullet hits something
       }
       shootPortal_CD = millis(); //to reset/restart cooldown time
     }

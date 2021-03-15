@@ -5,8 +5,11 @@ Bullet b;
 Player p;
 PortalGun pg;
 Maps m;
-PImage player, portalGun, tutorialStage, stage1, error;
-Gif portal1, portal2; //the portals are gifs - "portal1" is green and "portal2" is magenta
+PImage player, portalGun;
+PImage tutorialStage, stage1, stage2, stage3, error; //all the different stages
+PImage button, poweredButton, lever; //different stage utilities
+PImage stage2_button1Effect, stage2_lever1Effect; //effects of stage utilities
+Gif portal1, portal2, lava; //the portals are gifs - "portal1" is green and "portal2" is magenta
 
 
 void setup() {
@@ -15,19 +18,15 @@ void setup() {
   millis();
 
   b = new Bullet();
-  m = new Maps();
+  m = new Maps(); //this also initializes the different images
   pg = new PortalGun();
   p = new Player();
-
-  player = loadImage("Steve.png");  //image is 30x30 pixels
-  portalGun = loadImage("portal_gun.png");
-  tutorialStage = loadImage("tutorial.png");
-  stage1 = loadImage("stage_1.png");
-  error = loadImage("error.png");
   
-  portal1 = new Gif(this, "PortalGreenGif.gif");   //initializes the portal gifs
-  portal2 = new Gif(this, "PortalMagentaGif.gif"); //"
-  portal1.loop(); //makes the portal gifs loop
+  lava = new Gif(this, "stage_3_Lava.gif");         //"
+  portal1 = new Gif(this, "portalGreenGif.gif");   //initializes the gifs
+  portal2 = new Gif(this, "portalMagentaGif.gif"); //"
+  lava.loop();    //"
+  portal1.loop(); //makes the gifs loop
   portal2.loop(); //"
   
   pg.shootPortal_CD = millis();
@@ -35,7 +34,7 @@ void setup() {
   pg.tpToPortal2_CD = millis();
 
   imageMode(CENTER);
-  ellipseMode(CENTER);
+  //ellipseMode(CENTER);
 }
 
 
@@ -43,6 +42,14 @@ void setup() {
 void draw() {
   m.checkMapChange(); //to change the stage, if player is within certain bounds
   image(m.loadMap(m.stage), width/2, height/2); //draws the map, based on 'stage'
+  if (m.displayLava) {
+    image(lava, 361, 570);
+    if (p.pos.x >= 249 && p.pos.x <= 473) {
+      if (p.pos.y >= 551 && p.pos.y <= 590) {
+        p.respawnPlayer();
+      }
+    }
+  }
 
   //if a bullet is fired, checks and performs collision and updates bullet
   if (b.firedBullet) { //called before everything else, since bullets rely heavily on background colors
@@ -61,16 +68,18 @@ void draw() {
     pg.portalTP1(); //func for teleporting *from* portal 1
     pg.portalTP2(); //func for teleporting *from* portal 2
   }
+  println(m.stage);
+  println("mouseX: " + mouseX + "  mouseY: " + mouseY);
+  
+  println();
 }
 
 void mousePressed() {
   if (mouseButton == LEFT) {
-    b.firedLeft = true; //left clicked, so left portal should be fired
-    b.firedRight = false; //right portal should *not* be fired
+    b.firedLeft = true; //left clicked, meaning left portal should be fired
     pg.firePortal(1); //fire the correct portal
   }
   if (mouseButton == RIGHT) {
-    b.firedRight = true;
     b.firedLeft = false;
     pg.firePortal(2);
   }
@@ -86,8 +95,7 @@ void keyPressed() {
     pg.haltTP = true;
   }
   if (keyCode == 'R') { //pressing 'R' resets portals
-    pg.resetPortals(1);
-    pg.resetPortals(2);
+    pg.resetPortals(0);
   }
 }
 

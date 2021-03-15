@@ -91,7 +91,7 @@ class Player {
       }
     }
 
-    if (pos.x >= width ||pos.x <= 0 || pos.y >= height || pos.y <= 0) {  //checks if player is outside the screen
+    if (pos.x > width ||pos.x < 0 || pos.y > height || pos.y < 0) {  //checks if player is outside the screen
       respawnPlayer();
     }
   }

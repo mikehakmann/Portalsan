@@ -1,7 +1,7 @@
 class Bullet { //<>//
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
   float angle, rotation;
-  boolean firedBullet = false, firedLeft = false, firedRight = false;
+  boolean firedBullet = false, firedLeft = false;
   int north, south, east, west; //for int-colors of each direction around the bullet
   int notNorth, notSouth, notEast, notWest; //for int-colors of all, except 1 specific direction around the bullet
 
