@@ -35,12 +35,12 @@ class Player {
 
 
   void verticleMovement() {
-    if (get(int(pos.x), int(pos.y + 15)) == m.black  &&  jump) {  //if player is on the ground/platform (i.e. not falling) and jumps:
-      gravity.y = jumpAcc.y;
-      pos.add(gravity);
-      jump = false;
+    if (m.colorAt(pos.x, pos.y + 15) == m.black && jump || m.colorAt(pos.x, pos.y + 15) == m.yellow  &&  jump) {  //if player is on the ground/platform (i.e. not falling) and jumps:
+      gravity.y = jumpAcc.y; //set gravity to jump (i.e. set it to negative)
+      pos.add(gravity); //add the gravity
+      jump = false; //stop the jumping, so player doesn't fly away
     }//
-    else if (get(int(pos.x), int(pos.y + 15)) != m.black) {  //if the color right at the bottom edge of the player is NOT black: add gravity
+    else if (m.colorAt(pos.x, pos.y + 15) != m.black && m.colorAt(pos.x, pos.y + 15) != m.yellow) {  //if the color right at the bottom edge of the player is NOT black or yellow: add gravity
       if (gravity.y < maxGravity.y) { //if gravity is below the limit:
         gravity.add(gravAcc);  //add the acceleration to gravity to give an acceleration-like effect
       }
@@ -53,11 +53,13 @@ class Player {
       gravity.y = initialGravity.y;  //reset the gravity
     }
 
-    if ((get(int(pos.x), int((pos.y + 15) + gravity.y)))  == m.black) {  // "(pos.y + 25) + gravity.y" is (almost) player's pos in the next frame, when falling
-      for (float i = 0.0f; get(int(pos.x), int(pos.y + 15)) != m.black; i += 0.1f) {
+    if (m.colorAt(pos.x, pos.y + 15 + gravity.y/2) == m.black || m.colorAt(pos.x, pos.y + 15 + gravity.y) == m.black || //checks player's pos in next frame:
+        m.colorAt(pos.x, pos.y + 15 + gravity.y/2) == m.yellow || m.colorAt(pos.x, pos.y + 15 + gravity.y) == m.yellow) {
+
+      for (float i = 0.0; m.colorAt(pos.x, pos.y + 15) != m.black ||m.colorAt(pos.x, pos.y + 15) != m.yellow; i += 0.1) { //if next frame is black, then start increasing pos a little, until player barely stands on top
         pos.y += i;
 
-        if (get(int(pos.x), int(pos.y + 15)) == m.black) {
+        if (m.colorAt(pos.x, pos.y + 15) == m.black || m.colorAt(pos.x, pos.y + 15) == m.yellow) { //break out of loop once player hits the ground
           break;
         }
       }
@@ -77,18 +79,13 @@ class Player {
     }
   }
 
-  void movePlayer() {  //checks color of pixel around player, to see if they are not black. If so, allows player to continue movement in desired direction
-    //if (get(int(pos.x + 15), int(pos.y)) != m.black  ||  get(int(pos.x - 15), int(pos.y)) != m.black) {
-    //  pos.x = constrain(pos.x + vel.x * (int(goRight) - int(goLeft)), 11, width  - 11);
-    //}
-    if (get(int(pos.x - 15), int(pos.y)) != m.black || get(int(pos.x + 15), int(pos.y)) != m.black) {
-      if (get(int(pos.x + 15), int(pos.y)) != m.black) {
-        pos.x = constrain(pos.x + vel.x * (int(goRight)), 11, width  - 11);
-      }
+  void movePlayer() {  //checks color of pixels around player, to see if they are not black. If so, allows player to move
+    if (m.colorAt(pos.x + 15, pos.y) != m.black && m.colorAt(pos.x + 15, pos.y) != m.yellow) {
+      pos.x = constrain(pos.x + vel.x * (int(goRight)), 11, width  - 11);
+    }
 
-      if (get(int(pos.x - 15), int(pos.y)) != m.black) {
-        pos.x = constrain(pos.x + vel.x * (- int(goLeft)), 11, width  - 11);
-      }
+    if (m.colorAt(pos.x - 15, pos.y) != m.black && m.colorAt(pos.x - 15, pos.y) != m.yellow) {
+      pos.x = constrain(pos.x + vel.x * (- int(goLeft)), 11, width  - 11);
     }
 
     if (pos.x > width ||pos.x < 0 || pos.y > height || pos.y < 0) {  //checks if player is outside the screen

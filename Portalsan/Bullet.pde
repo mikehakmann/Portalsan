@@ -1,9 +1,10 @@
-class Bullet { //<>//
+class Bullet { //<>// //<>//
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
   float angle, rotation;
   boolean firedBullet = false, firedLeft = false;
   int north, south, east, west; //for int-colors of each direction around the bullet
   int notNorth, notSouth, notEast, notWest; //for int-colors of all, except 1 specific direction around the bullet
+  int nextFrame, currentFrame;
 
   Bullet() {
     bulletPos = new PVector(100, 100);
@@ -31,56 +32,106 @@ class Bullet { //<>//
 
 
   void collision() { //both checks for and perfoms collision
-    if (get(int(bulletPos.x + dir.x), int(bulletPos.y + dir.y)) == m.black) {  //if bullets pos in next frame is black
+    nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y+ dir.y);
+    currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
+    
+    if (nextFrame == m.black) {  //if bullets pos in next frame is black
 
-      while (get(int(bulletPos.x), int(bulletPos.y)) != m.black) { //if bullet hits a wall next frame:
+      while (currentFrame != m.black) { //if bullet hits a wall next frame:
+        currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
         bulletPos.x += (dir.x/10);  //adds a little to bulletPos
         bulletPos.y += (dir.y/10);  //so it only barely hits the wall
 
-        if (get(int(bulletPos.x), int(bulletPos.y)) == m.black) {  //when a wall is hit: //<>//
+        if (currentFrame == m.black) {  //when a wall is hit: //<>// //<>//
           dir.x = 0;  //makes the direction 0 to stop movement
           dir.y = 0;  //"
 
           firedBullet = false; //bullet has collided and should therefore stop
-          rotation = determineRotation();
+          //rotation = determineRotation(); //original code
+          determineRotation();
           
           //following if-else is for placing the correct portal - determined in mousePressed()
           if (firedLeft) {
-            pg.portal1Angle = rotation;
+            
+            //pg.portal1Angle = rotation; //original code
+            pg.portal1Angle = setRotation(1);
             placePortal(1);
+            //pg.portal1Angle = setRotation(1);
           }//
           else {
-            pg.portal2Angle = rotation;
+            
+            //pg.portal2Angle = rotation; //original code
+            pg.portal2Angle = setRotation(2);
             placePortal(2);
+            //pg.portal2Angle = setRotation(2);
           }
 
           break; //break out of while-loop since bullet has collided
         }
+        //else if () {
+          
+        //}
       }
     }
   }
   
-  
-  float determineRotation() {
-    north = get(int(bulletPos.x), int(bulletPos.y - 5));
-    south = get(int(bulletPos.x), int(bulletPos.y + 5));
-    east = get(int(bulletPos.x + 5), int(bulletPos.y));
-    west = get(int(bulletPos.x - 5), int(bulletPos.y));
-    notNorth = (south + east+  west)/3; //they should all be either black, so finding sum and dividing by 3 gives the int for black
-    notSouth = (north + east + west)/3;
+   //original code here was 1 function
+  void determineRotation() {
+    north = m.colorAt(bulletPos.x, bulletPos.y - 5);
+    south = m.colorAt(bulletPos.x, bulletPos.y + 5);
+    east = m.colorAt(bulletPos.x + 5, bulletPos.y);
+    west = m.colorAt(bulletPos.x - 5, bulletPos.y);
+    notNorth = (south + east + west)/3; //they should all be either black,
+    notSouth = (north + east + west)/3; //so finding sum and dividing by 3 gives the int for black
     notEast = (north + south + west)/3;
     notWest = (north + south + east)/3;
     
-    if (north == m.bgColor && notNorth == m.black) {
+    
+  }
+  
+  float setRotation(int portal) { //sets the rotation (and TP-coords, since these depend on rotation) of the portals
+    if (north == m.bgColor && notNorth == m.black) { //only check for black because portals can't be placed on yellow walls
+      if (portal == 1) {
+        pg.tpToPortal1_X = pg.portal1_X;
+        pg.tpToPortal1_Y = pg.portal1_Y - 5;
+      }//
+      else {
+        pg.tpToPortal2_X = pg.portal2_X;
+        pg.tpToPortal2_Y = pg.portal2_Y - 5;
+      }
       return -(PI/2);
     }
     else if (south == m.bgColor && notSouth == m.black) {
+      if (portal == 1) {
+        pg.tpToPortal1_X = pg.portal1_X;
+        pg.tpToPortal1_Y = pg.portal1_Y + 5;
+      }//
+      else {
+        pg.tpToPortal2_X = pg.portal2_X;
+        pg.tpToPortal2_Y = pg.portal2_Y + 5;
+      }
       return PI/2;
     }
     else if (east == m.bgColor && notEast == m.black) {
+      if (portal == 1) {
+        pg.tpToPortal1_X = pg.portal1_X + 5;
+        pg.tpToPortal1_Y = pg.portal1_Y;
+      }//
+      else {
+        pg.tpToPortal2_X = pg.portal2_X + 5;
+        pg.tpToPortal2_Y = pg.portal2_Y;
+      }
       return PI;
     }
     else if (west == m.bgColor && notWest == m.black) {
+      if (portal == 1) {
+        pg.tpToPortal1_X = pg.portal1_X - 5;
+        pg.tpToPortal1_Y = pg.portal1_Y;
+      }//
+      else {
+        pg.tpToPortal2_X = pg.portal2_X - 5;
+        pg.tpToPortal2_Y = pg.portal2_Y;
+      }
       return 0.0;
     }
     return 0.0;
