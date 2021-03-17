@@ -62,8 +62,15 @@ class PortalGun {
           tpToPortal1_CD = 0; //resets cooldown for this portal
           //p.pos.x = portal2_X; //make player's position other portal's TP-coords (i.e. Teleport player)   //original code
           //p.pos.y = portal2_Y; //"                                                                        //original code
-          p.pos.x = tpToPortal1_X;
-          p.pos.y = tpToPortal1_Y;
+          p.pos.x = tpToPortal2_X;
+          p.pos.y = tpToPortal2_Y;
+          println("teleported to portal 1");
+          println("tpToPortal1_X: " + tpToPortal1_X);
+          println("tpToPortal1_Y: " + tpToPortal1_Y);
+          println();
+          println("tpToPortal2_X: " + tpToPortal2_X);
+          println("tpToPortal2_Y: " + tpToPortal2_Y);
+          println();
         }
       }
     }
@@ -78,8 +85,9 @@ class PortalGun {
           tpToPortal2_CD = 0;
           //p.pos.x = portal1_X;  //original code
           //p.pos.y = portal1_Y;  //original code
-          p.pos.x = tpToPortal2_X;
-          p.pos.y = tpToPortal2_Y;
+          p.pos.x = tpToPortal1_X;
+          p.pos.y = tpToPortal1_Y;
+          println("teleported to portal 2");
         }
       }
     }
@@ -94,8 +102,8 @@ class PortalGun {
       image(portal1, 0, 0);
       popMatrix();
       
-      println("portal 1 X: " + tpToPortal1_X);
-      println("portal 1 Y: " + tpToPortal1_Y);
+      //println("portal 1 X: " + tpToPortal1_X);
+      //println("portal 1 Y: " + tpToPortal1_Y);
     }
   }
 
@@ -108,8 +116,8 @@ class PortalGun {
       image(portal2, 0, 0);
       popMatrix();
       
-      println("portal 2 X: " + tpToPortal2_X);
-      println("portal 2 Y: " + tpToPortal2_Y);
+      //println("portal 2 X: " + tpToPortal2_X);
+      //println("portal 2 Y: " + tpToPortal2_Y);
     }
   }
 }

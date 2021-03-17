@@ -54,16 +54,16 @@ class Bullet { //<>//
           if (firedLeft) {
             
             //pg.portal1Angle = rotation; //original code
-            pg.portal1Angle = setRotation(1);
-            placePortal(1);
             //pg.portal1Angle = setRotation(1);
+            placePortal(1);
+            pg.portal1Angle = setRotation(1);
           }//
           else {
             
             //pg.portal2Angle = rotation; //original code
-            pg.portal2Angle = setRotation(2);
-            placePortal(2);
             //pg.portal2Angle = setRotation(2);
+            placePortal(2);
+            pg.portal2Angle = setRotation(2);
           }
 
           break; //break out of while-loop since bullet has collided
@@ -93,43 +93,45 @@ class Bullet { //<>//
     if (north == m.bgColor && notNorth == m.black) { //only check for black because portals can't be placed on yellow walls
       if (portal == 1) {
         pg.tpToPortal1_X = pg.portal1_X;
-        pg.tpToPortal1_Y = pg.portal1_Y - 5;
+        pg.tpToPortal1_Y = pg.portal1_Y - 15;
+        println("portal1_X: " + pg.portal1_X);
+        println("portal1_Y: " + pg.portal1_Y);
       }//
       else {
         pg.tpToPortal2_X = pg.portal2_X;
-        pg.tpToPortal2_Y = pg.portal2_Y - 5;
+        pg.tpToPortal2_Y = pg.portal2_Y - 15;
       }
       return -(PI/2);
     }
     else if (south == m.bgColor && notSouth == m.black) {
       if (portal == 1) {
         pg.tpToPortal1_X = pg.portal1_X;
-        pg.tpToPortal1_Y = pg.portal1_Y + 5;
+        pg.tpToPortal1_Y = pg.portal1_Y + 15;
       }//
       else {
         pg.tpToPortal2_X = pg.portal2_X;
-        pg.tpToPortal2_Y = pg.portal2_Y + 5;
+        pg.tpToPortal2_Y = pg.portal2_Y + 15;
       }
       return PI/2;
     }
     else if (east == m.bgColor && notEast == m.black) {
       if (portal == 1) {
-        pg.tpToPortal1_X = pg.portal1_X + 5;
+        pg.tpToPortal1_X = pg.portal1_X + 15;
         pg.tpToPortal1_Y = pg.portal1_Y;
       }//
       else {
-        pg.tpToPortal2_X = pg.portal2_X + 5;
+        pg.tpToPortal2_X = pg.portal2_X + 15;
         pg.tpToPortal2_Y = pg.portal2_Y;
       }
       return PI;
     }
     else if (west == m.bgColor && notWest == m.black) {
       if (portal == 1) {
-        pg.tpToPortal1_X = pg.portal1_X - 5;
+        pg.tpToPortal1_X = pg.portal1_X - 15;
         pg.tpToPortal1_Y = pg.portal1_Y;
       }//
       else {
-        pg.tpToPortal2_X = pg.portal2_X - 5;
+        pg.tpToPortal2_X = pg.portal2_X - 15;
         pg.tpToPortal2_Y = pg.portal2_Y;
       }
       return 0.0;
