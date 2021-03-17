@@ -79,7 +79,8 @@ void mousePressed() {
   if (mouseButton == LEFT) {
     b.firedLeft = true; //left clicked, meaning left portal should be fired
     pg.firePortal(1); //fire the correct portal
-  } else if (mouseButton == RIGHT) {
+  }//comment to stop "else" from appearing on this line
+  else if (mouseButton == RIGHT) {
     b.firedLeft = false; //right portal was fired, which *isn't* the left one
     pg.firePortal(2);
   }
@@ -88,7 +89,7 @@ void mousePressed() {
 void keyPressed() {
   p.playerSetMove(keyCode, true);
 
-  if (keyCode == ' ') {
+  if (keyCode == ' ') { //Note: player can only jump while on the ground
     p.jump = true;
   }
   if (keyCode == 'E') { //activates nearby levers while held down

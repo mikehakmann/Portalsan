@@ -72,7 +72,6 @@ class Bullet { //<>//
     }
   }
   
-   //original code here was 1 function
   void determineRotation() {
     north = m.colorAt(bulletPos.x, bulletPos.y - 5);
     south = m.colorAt(bulletPos.x, bulletPos.y + 5);
@@ -82,8 +81,6 @@ class Bullet { //<>//
     notSouth = (north + east + west)/3; //so finding sum and dividing by 3 gives the int for black
     notEast = (north + south + west)/3;
     notWest = (north + south + east)/3;
-    
-    
   }
   
   float setRotation(int portal) { //sets the rotation (and TP-coords, since these depend on rotation) of the portals

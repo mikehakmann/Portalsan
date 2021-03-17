@@ -1,5 +1,5 @@
 class Maps {
-  int stage = 4;
+  int stage = 0;
   int black = -16777216;  //the color 'black' as an int (obtained with get())
   int yellow = -2621696;  //the color 'yellow' as an int (used to disable portal use - player can still walk on it)
   int bgColor = -6574665; //the color of the background (blue/cyan-ish) as an int
@@ -309,7 +309,7 @@ class Maps {
         if (p.pos.y >= 225 && p.pos.y <= 245) {
           image(poweredButton, 50, 233);
           button2Powered = true;
-          secretDiscovered = true;
+          secretDiscovered = true; //used to alter the victory text a little
           
           pushMatrix();
           translate(width/2, height/2);
@@ -357,7 +357,7 @@ class Maps {
     /*-----------------------------------------------------------------------------------*/
     
     else if (stage == 4) {
-      displayText(4);
+      displayText(4); //this displays the victory text
     }
   }
 

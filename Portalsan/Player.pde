@@ -69,15 +69,15 @@ class Player {
   }
 
   boolean playerSetMove(int k, boolean b) {
-    switch (k) {              // "
-    case + 'A':               // Player can only move sideways
-      return goLeft = b;      // therefore only 'A' and 'D' are checked
+    switch (k) {            // "
+    case + 'A':             // Player can only move sideways
+      return goLeft = b;    // therefore only 'A' and 'D' are checked
+    
+    case + 'D':             // "
+      return goRight = b;   // "
 
-    case + 'D':               // "
-      return goRight = b;     // "
-
-    default:                  // "
-      return b;               // "
+    default:                // "
+      return b;             // "
     }
   }
 
