@@ -22,7 +22,7 @@ void setup() {
   pg = new PortalGun();
   p = new Player();
   
-  lava = new Gif(this, "stage_3_Lava.gif");         //"
+  lava = new Gif(this, "stage_3_Lava.gif");        //"
   portal1 = new Gif(this, "portalGreenGif.gif");   //initializes the gifs
   portal2 = new Gif(this, "portalMagentaGif.gif"); //"
   lava.loop();    //"

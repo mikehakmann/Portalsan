@@ -1,4 +1,4 @@
-class Bullet { //<>// //<>//
+class Bullet { //<>//
   PVector bulletPos, dir, speed; //starting outside the map, so it's not visible
   float angle, rotation;
   boolean firedBullet = false, firedLeft = false;
@@ -42,7 +42,7 @@ class Bullet { //<>// //<>//
         bulletPos.x += (dir.x/10);  //adds a little to bulletPos
         bulletPos.y += (dir.y/10);  //so it only barely hits the wall
 
-        if (currentFrame == m.black) {  //when a wall is hit: //<>// //<>//
+        if (currentFrame == m.black) {  //when a wall is hit: //<>//
           dir.x = 0;  //makes the direction 0 to stop movement
           dir.y = 0;  //"
 
