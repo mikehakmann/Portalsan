@@ -53,8 +53,10 @@ class Player {
       gravity.y = initialGravity.y;  //reset the gravity
     }
 
-    if (m.colorAt(pos.x, pos.y + 15 + gravity.y/2) == m.black || m.colorAt(pos.x, pos.y + 15 + gravity.y) == m.black || //checks player's pos in next frame:
-        m.colorAt(pos.x, pos.y + 15 + gravity.y/2) == m.yellow || m.colorAt(pos.x, pos.y + 15 + gravity.y) == m.yellow) {
+    if (m.colorAt(pos.x, pos.y + 15 + gravity.y/2) == m.black   || //checks player's pos in next frame:
+        m.colorAt(pos.x, pos.y + 15 + gravity.y)   == m.black   ||
+        m.colorAt(pos.x, pos.y + 15 + gravity.y/2) == m.yellow  ||
+        m.colorAt(pos.x, pos.y + 15 + gravity.y)   == m.yellow) {
 
       for (float i = 0.0; m.colorAt(pos.x, pos.y + 15) != m.black ||m.colorAt(pos.x, pos.y + 15) != m.yellow; i += 0.1) { //if next frame is black, then start increasing pos a little, until player barely stands on top
         pos.y += i;

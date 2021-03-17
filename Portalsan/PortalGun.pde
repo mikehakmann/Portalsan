@@ -60,17 +60,8 @@ class PortalGun {
         if (p.pos.y >= portal1_Y - n  &&  p.pos.y <= portal1_Y + n) { //"
           tpToPortal2_CD = millis(); //functionally reset cooldown for the *OTHER* portal (portal 2), because player will TP to it
           tpToPortal1_CD = 0; //resets cooldown for this portal
-          //p.pos.x = portal2_X; //make player's position other portal's TP-coords (i.e. Teleport player)   //original code
-          //p.pos.y = portal2_Y; //"                                                                        //original code
-          p.pos.x = tpToPortal2_X;
-          p.pos.y = tpToPortal2_Y;
-          println("teleported to portal 1");
-          println("tpToPortal1_X: " + tpToPortal1_X);
-          println("tpToPortal1_Y: " + tpToPortal1_Y);
-          println();
-          println("tpToPortal2_X: " + tpToPortal2_X);
-          println("tpToPortal2_Y: " + tpToPortal2_Y);
-          println();
+          p.pos.x = tpToPortal2_X; //make player's position other portal's TP-coords
+          p.pos.y = tpToPortal2_Y; //(i.e. Teleport player to correct side of other portal)
         }
       }
     }
@@ -83,11 +74,8 @@ class PortalGun {
         if (p.pos.y >= portal2_Y - n  &&  p.pos.y <= portal2_Y + n) {
           tpToPortal1_CD = millis(); //functionally resets cooldown for the *OTHER* portal (portal 1)
           tpToPortal2_CD = 0;
-          //p.pos.x = portal1_X;  //original code
-          //p.pos.y = portal1_Y;  //original code
           p.pos.x = tpToPortal1_X;
           p.pos.y = tpToPortal1_Y;
-          println("teleported to portal 2");
         }
       }
     }
@@ -101,9 +89,6 @@ class PortalGun {
       rotate(portal1Angle);
       image(portal1, 0, 0);
       popMatrix();
-      
-      //println("portal 1 X: " + tpToPortal1_X);
-      //println("portal 1 Y: " + tpToPortal1_Y);
     }
   }
 
@@ -115,9 +100,6 @@ class PortalGun {
       rotate(portal2Angle);
       image(portal2, 0, 0);
       popMatrix();
-      
-      //println("portal 2 X: " + tpToPortal2_X);
-      //println("portal 2 Y: " + tpToPortal2_Y);
     }
   }
 }
