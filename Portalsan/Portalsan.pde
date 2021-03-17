@@ -34,7 +34,6 @@ void setup() {
   pg.tpToPortal2_CD = millis(); //"
   
   imageMode(CENTER);
-  //ellipseMode(CENTER);
 }
 
 

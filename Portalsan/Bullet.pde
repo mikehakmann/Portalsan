@@ -35,42 +35,39 @@ class Bullet { //<>//
     nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y+ dir.y);
     currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
     
-    if (nextFrame == m.black) {  //if bullets pos in next frame is black
+    if (nextFrame == m.black || nextFrame == m.yellow) {  //if bullets pos in next frame is black
 
-      while (currentFrame != m.black) { //if bullet hits a wall next frame:
+      while (currentFrame != m.black || currentFrame != m.yellow) { //if bullet hits a wall next frame:
         currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
         bulletPos.x += (dir.x/10);  //adds a little to bulletPos
         bulletPos.y += (dir.y/10);  //so it only barely hits the wall
 
-        if (currentFrame == m.black) {  //when a wall is hit: //<>//
+        if (currentFrame == m.black) {  //when a *black* wall is hit: //<>//
           dir.x = 0;  //makes the direction 0 to stop movement
           dir.y = 0;  //"
 
           firedBullet = false; //bullet has collided and should therefore stop
-          //rotation = determineRotation(); //original code
           determineRotation();
           
           //following if-else is for placing the correct portal - determined in mousePressed()
           if (firedLeft) {
-            
-            //pg.portal1Angle = rotation; //original code
-            //pg.portal1Angle = setRotation(1);
             placePortal(1);
             pg.portal1Angle = setRotation(1);
           }//
           else {
-            
-            //pg.portal2Angle = rotation; //original code
-            //pg.portal2Angle = setRotation(2);
             placePortal(2);
             pg.portal2Angle = setRotation(2);
           }
 
           break; //break out of while-loop since bullet has collided
         }
-        //else if () {
+        else if (currentFrame == m.yellow) { //if bullet instaed hits a *yellow* wall
+          firedBullet = false;
+          bulletPos.x = -100;
+          bulletPos.y = 0;
           
-        //}
+          break;
+        }
       }
     }
   }
