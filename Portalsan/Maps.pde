@@ -59,7 +59,7 @@ class Maps {
   }
 
 
-  void mapProperties() { //function for loading specific stage utilities, like lava or levers, and also changes maps (ugliest func we have)
+  void mapProperties() { //function for loading specific stage utilities, like lava or levers, and also changes maps (verry repetitive, though)
     if (stage == 0) { //if player is on tutorial map
       if (p.pos.x >= 780 && p.pos.x <= width) { //if player is within the end part of this map
         if (p.pos.y >= 10 && p.pos.y <= 75) {   //"
@@ -248,8 +248,7 @@ class Maps {
       }
     }
   }
-
-  /*-----------------------------Ugly function over-----------------------------*/
+  
 
 
   void loadMapImages() {
