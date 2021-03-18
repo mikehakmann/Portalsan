@@ -42,11 +42,9 @@ class PortalGun {
 
       if (portal == 1) { //if portal 1 (green) was fired:
         resetPortals(1); //resets portal, so it looks like it disappears
-        renderPortal1 = true; //to let the portal render later if bullet hits something
       }//
       else { //if not portal 1, then it must be portal 2 (magenta)
         resetPortals(2);
-        renderPortal2 = true; //to let portal 2 be rendered if bullet hits something
       }
       shootPortal_CD = millis(); //to reset/restart cooldown time
     }

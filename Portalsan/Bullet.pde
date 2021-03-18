@@ -32,7 +32,7 @@ class Bullet { //<>//
   }
 
 
-  void collision() { //both checks for and perfoms collision
+  void collision() { //both checks for and perfoms collision - also only after detecting collision, that portals are actually rendered
     nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y+ dir.y);
     currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
     
@@ -52,10 +52,12 @@ class Bullet { //<>//
           
           //following if-else is for placing the correct portal - determined in mousePressed()
           if (firedLeft) {
+            pg.renderPortal1 = true; //to let the portal render later if bullet hits something
             placePortal(1);
             pg.portal1Angle = setRotation(1);
           }//
           else {
+            pg.renderPortal2 = true; //to let portal 2 be rendered if bullet hits something
             placePortal(2);
             pg.portal2Angle = setRotation(2);
           }
