@@ -20,11 +20,11 @@ void setup() {
   b = new Bullet();
   m = new Maps(); //this also initializes the different images
   pg = new PortalGun();
-  p = new Player();
+p = new Player();
 
   lava = new Gif(this, "stage_3_Lava.gif");        //"
-  portal1 = new Gif(this, "portalGreenGif.gif");   //initializes the gifs
-  portal2 = new Gif(this, "portalMagentaGif.gif"); //"
+  portal1 = new Gif(this, "PortalGreen.gif");   //initializes the gifs
+  portal2 = new Gif(this, "PortalMagenta.gif"); //"
   lava.loop();    //"
   portal1.loop(); //makes the gifs loop
   portal2.loop(); //"
