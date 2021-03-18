@@ -78,10 +78,12 @@ void draw() {
 void mousePressed() {
   if (mouseButton == LEFT) {
     b.firedLeft = true; //left clicked, meaning left portal should be fired
+    b.c = #328b39;
     pg.firePortal(1); //fire the correct portal
   }//comment to stop "else" from appearing on this line
   else if (mouseButton == RIGHT) {
     b.firedLeft = false; //right portal was fired, which *isn't* the left one
+    b.c = #9205b6;
     pg.firePortal(2);
   }
 }
