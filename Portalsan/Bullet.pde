@@ -148,6 +148,6 @@ class Bullet { //<>//
 
   void bulletUpdate() {
     bulletPos.add(dir);  //adds direction (which got a speed added) so bullet moves in desired direction
-    circle(bulletPos.x, bulletPos.y, 15);  //placeholder (or not - bullet might stay like this)
+    circle(bulletPos.x, bulletPos.y, 7);  //placeholder (or not - bullet might stay like this)
   }
 }
