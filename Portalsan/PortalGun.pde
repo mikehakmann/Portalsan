@@ -4,10 +4,9 @@ class PortalGun {
   float portal1Angle, portal2Angle; //angle each portal is rotated with
   boolean renderPortal1, renderPortal2; //whether a portal should be rendered
   boolean haltTP = false; //holding 'shift' halts teleporting
-
-  int shootPortal_CD; //a cooldown on shooting portals
-  int tpToPortal1_CD; //a cooldown on teleporting *from* portal 1
-  int tpToPortal2_CD; //a cooldown on teleporting *from* portal 2
+  
+  int shootPortal_CD, tpToPortal1_CD, tpToPortal2_CD; //cooldowns for shooting portals and teleporting to them
+  
   
   void resetPortals(int portal) { //"removes" portals by placing them outside the player's view
     switch(portal) { //a switch-statement to make things go quicker than an if-statement

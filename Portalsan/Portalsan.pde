@@ -50,11 +50,12 @@ void draw() {
     b.collision();
     b.bulletUpdate();
   }
-
+  
+  p.getPlayerColors(); //gets pixel colors around player - for collision and to shorten if-statements
   p.verticleMovement(); //really just player's collision when falling & jumping
-  p.movePlayer();
-  p.render();
-  p.rotateGun(); //notice gun is drawn *after* checking color around player for collision (that way it doesn't interfere)
+  p.movePlayer(); //first move,
+  p.render();     //then render
+  p.rotateGun(); //gun is drawn *after* checking color around player for collision so it doesn't interfere
 
   pg.renderPortal1(pg.portal1_X, pg.portal1_Y); //renders portals
   pg.renderPortal2(pg.portal2_X, pg.portal2_Y); //"
