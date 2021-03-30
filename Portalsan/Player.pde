@@ -1,6 +1,6 @@
 class Player {
-  final PVector initialGravity = new PVector(0.0, 0.2);  //to reset gravity later on
-  final PVector maxGravity = new PVector(0.0, 50.0);
+  PVector initialGravity = new PVector(0.0, 0.2);  //to reset gravity later on
+  PVector maxGravity = new PVector(0.0, 50.0);
   PVector pos, vel, gravity, gravAcc, jumpAcc;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping-) acceleration makes "gravity" seem like *actual* gravity with an acceleration-like effect
@@ -79,6 +79,7 @@ class Player {
     else { //if it *is* black
       gravity.y = initialGravity.y;  //reset the gravity
     }
+    
     println("HalfFrame is:          " + pixelHalfFrame);
     println("m.colorAt(blabla) is:  " + m.colorAt((pos.x), (pos.y + 15 + gravity.y/2)));
     println("get(int(), int()) is:  " + get(int(pos.x), int(pos.y + 15 + gravity.y/2)));
@@ -88,14 +89,15 @@ class Player {
     println();
     println();
     println();
+    
     if (m.colorAt((pos.x), (pos.y + 15 + gravity.y/2)) == m.black   || //checks player's pos in next frame (uses 'gravity/2' in case player is going too fast for just 'gravity'):
         m.colorAt((pos.x), (pos.y + 15 + gravity.y))   == m.black   ||
         m.colorAt((pos.x), (pos.y + 15 + gravity.y/2)) == m.yellow  ||
         m.colorAt((pos.x), (pos.y + 15 + gravity.y))   == m.yellow) {
     //if (pixelHalfFrame == m.black   || //checks player's pos in next frame (uses 'gravity/2' in case player is going too fast for just 'gravity'):
-    //    pixelFullFrame   == m.black   ||
+    //    pixelFullFrame == m.black   ||
     //    pixelHalfFrame == m.yellow  ||
-    //    pixelFullFrame   == m.yellow) {
+    //    pixelFullFrame == m.yellow) {
 
       for (float i = 0.0; m.colorAt(pos.x, pos.y + 15) != m.black || m.colorAt(pos.x, pos.y + 15) != m.yellow; i += 0.1) { //if next frame has a platform, then start increasing pos a little, until player barely stands on top
         pos.y += i;

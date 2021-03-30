@@ -5,7 +5,7 @@ class Bullet { //<>//
   int north, south, east, west; //for int-colors of each direction around the bullet
   int notNorth, notSouth, notEast, notWest; //for int-colors of all, except 1 specific direction around the bullet
   int nextFrame, currentFrame;
-  color c;
+  color bulletColor;
 
   Bullet() {
     bulletPos = new PVector(100, 100);
@@ -152,7 +152,7 @@ class Bullet { //<>//
   void bulletUpdate() {
     bulletPos.add(dir);  //adds direction (which got a speed added) so bullet moves in desired direction
     pushMatrix();
-    fill(c);
+    fill(bulletColor);
     circle(bulletPos.x, bulletPos.y, 10);  //placeholder (or not - bullet might stay like this)
     popMatrix();
   }
