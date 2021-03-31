@@ -15,6 +15,7 @@ Gif portal1, portal2, lava; //the portals are gifs - "portal1" is green and "por
 void setup() {
   size(802, 602);
   frameRate(60);
+  cursor(CROSS);
   millis();
 
   b = new Bullet();
@@ -50,13 +51,19 @@ void draw() {
     b.collision();
     b.bulletUpdate();
   }
-  
+
   p.getPlayerColors(); //gets pixel colors around player - for collision and to shorten if-statements
   p.verticleMovement(); //really just player's collision when falling & jumping
-  p.movePlayer(); //first move,
-  p.render();     //then render
+  p.movePlayer(); //first let player move (sideways),
+  p.render();     //then render player
   p.rotateGun(); //gun is drawn *after* checking color around player for collision so it doesn't interfere
 
+  if (!(millis() - pg.shootPortal_CD > 1500)) {//if the cooldown time for shooting a portal hasn't passed:
+    pushMatrix();
+    noFill();
+    arc(mouseX, mouseY, 25, 25, -HALF_PI, (((millis() - pg.shootPortal_CD)/1500) * TWO_PI) - HALF_PI);
+    popMatrix();
+  }
   pg.renderPortal1(pg.portal1_X, pg.portal1_Y); //renders portals
   pg.renderPortal2(pg.portal2_X, pg.portal2_Y); //"
   if (pg.renderPortal1 && pg.renderPortal2) { //if both portals are placed, then allows for teleporting between them
@@ -77,15 +84,17 @@ void draw() {
 
 
 void mousePressed() {
-  if (mouseButton == LEFT) {
-    b.firedLeft = true; //left clicked, meaning left portal should be fired
-    b.bulletColor = #328b39;
-    pg.firePortal(1); //fire the correct portal
-  }//comment to stop "else" from appearing on this line
-  else if (mouseButton == RIGHT) {
-    b.firedLeft = false; //right portal was fired, which *isn't* the left one
-    b.bulletColor = #9205b6;
-    pg.firePortal(2);
+  if (millis() - pg.shootPortal_CD > 1500) { //if the cooldown time for shooting a portal has passed:
+    if (mouseButton == LEFT) {
+      b.firedLeft = true; //left clicked, meaning left portal should be fired
+      b.bulletColor = #328b39;
+      pg.firePortal(1); //fire the correct portal
+    }//comment to stop "else" from appearing on this line
+    else if (mouseButton == RIGHT) {
+      b.firedLeft = false; //right portal was fired, which *isn't* the left one
+      b.bulletColor = #9205b6;
+      pg.firePortal(2);
+    }
   }
 }
 

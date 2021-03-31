@@ -35,7 +35,6 @@ class PortalGun {
   }
 
   void firePortal(int portal) {
-    if (millis() - shootPortal_CD > 1500) { //if the cooldown time for shooting a portal has passed
       b.firedBullet = true; //basically enables collision for the bullet (see void draw())
       b.updateBulletDir(); //updates the direction, the bullet should travel
 
@@ -46,7 +45,6 @@ class PortalGun {
         resetPortals(2);
       }
       shootPortal_CD = millis(); //to reset/restart cooldown time
-    }
   }
 
 
