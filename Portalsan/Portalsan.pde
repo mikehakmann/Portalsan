@@ -52,18 +52,18 @@ void draw() {
     b.bulletUpdate();
   }
 
-  p.getPlayerColors(); //gets pixel colors around player - for collision and to shorten if-statements
+  //p.getPlayerColors(); //gets pixel colors around player - for collision and to shorten if-statements
   p.verticleMovement(); //really just player's collision when falling & jumping
   p.movePlayer(); //first let player move (sideways),
   p.render();     //then render player
   p.rotateGun(); //gun is drawn *after* checking color around player for collision so it doesn't interfere
 
-  if (!(millis() - pg.shootPortal_CD > 1500)) {//if the cooldown time for shooting a portal hasn't passed:
-    pushMatrix();
-    noFill();
-    arc(mouseX, mouseY, 25, 25, -HALF_PI, (((millis() - pg.shootPortal_CD)/1500) * TWO_PI) - HALF_PI);
-    popMatrix();
-  }
+  //if (!(millis() - pg.shootPortal_CD > 1500)) {//if the cooldown time for shooting a portal hasn't passed:
+  //  pushMatrix();
+  //  noFill();
+  //  arc(mouseX, mouseY, 25, 25, -HALF_PI, (((millis() - pg.shootPortal_CD)/1500) * TWO_PI) - HALF_PI);
+  //  popMatrix();
+  //}
   pg.renderPortal1(pg.portal1_X, pg.portal1_Y); //renders portals
   pg.renderPortal2(pg.portal2_X, pg.portal2_Y); //"
   if (pg.renderPortal1 && pg.renderPortal2) { //if both portals are placed, then allows for teleporting between them
