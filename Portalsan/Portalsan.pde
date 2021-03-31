@@ -52,7 +52,7 @@ void draw() {
     b.bulletUpdate();
   }
 
-  //p.getPlayerColors(); //gets pixel colors around player - for collision and to shorten if-statements
+  p.getPlayerColors(); //gets pixel colors around player - for collision and to shorten if-statements
   p.verticleMovement(); //really just player's collision when falling & jumping
   p.movePlayer(); //first let player move (sideways),
   p.render();     //then render player

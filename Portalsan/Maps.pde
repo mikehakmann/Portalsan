@@ -29,7 +29,7 @@ class Maps {
     lever3 = loadImage("lever3Effect.png");
 
     spawnX = 80;
-    spawnY = 535;
+    spawnY = 520; //was originally 535 but new verticleMovement code dies instantly with that value :/
   }
 
   PImage loadMap(int stage) {  //a function for switching the current map/stage
