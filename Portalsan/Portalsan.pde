@@ -37,6 +37,8 @@ void setup() {
   imageMode(CENTER);
   textAlign(CENTER, CENTER);
   textSize(14);
+
+  p.getPlayerColors();
 }
 
 
@@ -51,8 +53,7 @@ void draw() {
     b.collision();
     b.bulletUpdate();
   }
-
-  p.getPlayerColors(); //gets pixel colors around player - for collision and to shorten if-statements
+  
   p.verticleMovement(); //really just player's collision when falling & jumping
   p.movePlayer(); //first let player move (sideways),
   p.render();     //then render player
@@ -79,6 +80,7 @@ void draw() {
   }
 
   //println("mouseX: " + mouseX + "  mouseY: " + mouseY);
+  //println("Color at mouse: " + get(int(mouseX), int(mouseY)));
 }
 
 
@@ -95,6 +97,9 @@ void mousePressed() {
       b.bulletColor = #9205b6;
       pg.firePortal(2);
     }
+  }
+  if (keyCode == ENTER) {
+    loop();
   }
 }
 

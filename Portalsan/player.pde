@@ -4,7 +4,7 @@ class Player {
   PVector pos, vel, gravity, gravAcc, jumpAcc;
   //gravity on it's own is not enough for *actual* gravity-like behavoir
   //gravitational (and in this case also jumping-) acceleration makes "gravity" seem like *actual* gravity with an acceleration-like effect
-
+  
   float angle, targetAngle, tpPosX, tpPosY;
   boolean flipPlayer = false;
   boolean goLeft, goRight, jump = false;
@@ -36,8 +36,8 @@ class Player {
 
   void render() {
     pushMatrix();
-    translate(pos.x, pos.y); //translates to player's pos, so scaling to flip works better
-    if (!flipPlayer) {
+    translate(pos.x, pos.y); //translates to player's pos, so scaling to flip works as intended
+    if (!flipPlayer) { //('flipPlayer' is determined by the portal gun's angle)
       scale(1, 1);
     }//
     else {
@@ -82,7 +82,7 @@ class Player {
   //    }
   //  }
   //}
-  void verticleMovement() { //NEW AND MALFUNCTIONING (for some reason - for-loop seems to be the problem ('pos.y' somehow ends up huge)
+  void verticleMovement() {
     if ((pixel_LB == m.black || pixel_RB == m.black || pixel_LB == m.yellow || pixel_RB == m.yellow) && jump) {  //if player is on the ground/platform (i.e. not falling) and jumps:
       gravity.y = jumpAcc.y; //set gravity to jump (i.e. set it to negative)
       pos.add(gravity); //add the gravity
@@ -92,32 +92,25 @@ class Player {
       if (gravity.y < maxGravity.y) { //if gravity is below the limit:
         gravity.add(gravAcc);  //add the acceleration to gravity to give an acceleration-like effect
       }
-      if (gravity.y > maxGravity.y) { //if gravity is aboce the limit:
+      if (gravity.y > maxGravity.y) { //if gravity is above the limit:
         gravity.y = maxGravity.y; //set gravity right *at* the limit
       }
       pos.add(gravity); //add gravity to player's position
     }//
-    else { //if it *is* black
+    else { //if color *is* black
       gravity.y = initialGravity.y;  //reset the gravity
     }
     
-    println("pos.y: " + pos.y);
-    println("Half: " + pixelHalfFrame);
-    println("Full: " + pixelFullFrame);
+    getPlayerColors();
     
-    if (pixelHalfFrame == m.black   || pixelFullFrame == m.black   || //checks player's pos in next frame (uses 'gravity/2' in case player is going too fast for just 'gravity'):
-        pixelHalfFrame == m.yellow  || pixelFullFrame == m.yellow) {
+    if (pixelHalfFrame == m.black  || pixelFullFrame == m.black  || //checks player's pos in next frame (uses 'gravity/2' in case player is going too fast for just 'gravity'):
+        pixelHalfFrame == m.yellow || pixelFullFrame == m.yellow) {
           
-      for (float i = 0.0; (pixel_LB != m.black && pixel_RB != m.black && pixel_LB != m.yellow && pixel_RB != m.yellow); i += 0.1) { //if next frame has a platform, then start increasing pos a little, until player barely stands on top
-        pos.y += i;
-        println("pos.y: " + pos.y);
-        println("Black: " + m.black + "  Yellow: " + m.yellow + "  bgColor: " + m.bgColor);
-        println("Left bottom: " + pixel_LB);
-        println("Right bottom: " + pixel_RB);
-        println();
-        println();
+      while (pixel_LB != m.black && pixel_RB != m.black && pixel_LB != m.yellow && pixel_RB != m.yellow) { //if next frame has a platform, then start increasing pos a little, until player barely stands on top
+        pos.y++;
+        getPlayerColors();
         
-        if (pixel_LB == m.black || pixel_RB == m.black || pixel_LB == m.yellow || pixel_RB == m.yellow) { //break out of loop once player reaches/hits the ground
+        if ((pixel_LB == m.black || pixel_RB == m.black || pixel_LB == m.yellow || pixel_RB == m.yellow)) { //break out of loop once player reaches/hits the ground
           break;
         }
       }
