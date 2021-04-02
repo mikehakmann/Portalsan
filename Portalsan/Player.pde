@@ -6,7 +6,7 @@ class Player {
   boolean flipPlayer = false;
   boolean goLeft, goRight, jump = false;
   int speed, jumpAcc, terminalVel;
-  int pixel_LT, pixel_LM, pixel_LB, pixel_RT, pixel_RM, pixel_RB; //for colors of pixels at player's corners and middle
+  int pixel_LT, pixel_LM, pixel_LF, pixel_LB, pixel_RT, pixel_RM, pixel_RF, pixel_RB; //for colors of pixels at player's corners, middle and feet ("LF" and "RF" are the feet)
   int pixels_LS, pixels_RS;                                       //for colors along player's left right side
   int pixelHalfFrame, pixelFullFrame;                             //for color beneath player in the next frame
 
@@ -23,10 +23,12 @@ class Player {
   void getPixelColors() { //all collision is color based - this gets the different colors that player needs for collision (to make if-statements shorter)
     pixel_LT = get(int(pos.x - 9), int(pos.y - 15)); //"
     pixel_LM = get(int(pos.x - 9), int(pos.y));      //"
-    pixel_LB = get(int(pos.x - 9), int(pos.y + 15)); //colors of pixel on player's left and right side
+    pixel_LF = get(int(pos.x - 9), int(pos.y + 14)); //("14" is intentional - "15" is in the ground, and the feet aren't in the ground, but *just* above it)
+    pixel_LB = get(int(pos.x - 9), int(pos.y + 15));  //colors of pixel on player's left and right side
     pixel_RT = get(int(pos.x + 9), int(pos.y - 15)); //"
     pixel_RM = get(int(pos.x + 9), int(pos.y));      //"
-    pixel_RB = get(int(pos.x + 9), int(pos.y + 15)); //"
+    pixel_RF = get(int(pos.x + 9), int(pos.y + 14)); //"
+    pixel_RB = get(int(pos.x + 9), int(pos.y + 15));  //"
     
     //pixels_LS = (pixel_LT + pixel_LM + pixel_LB) / 3; //finds the average value - if all are the same color, these vairables will be too
     //pixels_RS = (pixel_RT + pixel_RM + pixel_RB) / 3; //(used for collision for sideways movement)
@@ -85,6 +87,42 @@ class Player {
       }
     }
   }
+  //void verticleMovement() {
+  //  if ((m.collisionColors.hasValue(pixel_LB) || m.collisionColors.hasValue(pixel_RB)) && jump) {  //if player is on the ground/platform (i.e. not falling) and jumps:
+  //    vel.y = jumpAcc; //set vel to jump (i.e. set it to negative) so player goes upwards
+  //    pos.add(vel); //add the velocity (which has become more of an acceleration now) to player
+  //    jump = false; //stop the jumping, so player doesn't fly away
+  //  }//
+  //  else if (!(m.collisionColors.hasValue(pixel_LB) || m.collisionColors.hasValue(pixel_RB))) {  //if the color right at the bottom edge of the player is NOT black or yellow: let player fall
+  //    if (vel.y < terminalVel) { //if velocity is below the limit:
+  //      vel.y += gravAcc;  //add the acceleration to gravity to give an acceleration-like effect
+  //    }
+  //    if (vel.y > terminalVel) { //if gravity is above the limit:
+  //      vel.y = terminalVel; //set gravity right *at* the limit
+  //    }
+  //    pos.add(vel); //add gravity to player's position
+  //  }//
+  //  else { //if color *is* black
+  //    vel = initialGravity.copy();  //reset the gravity
+  //  }
+
+  //  getPixelColors();
+
+  //  if (pixelHalfFrame == m.black  || pixelFullFrame == m.black  || //checks player's pos in next frame of falling (uses 'gravity/2' in case player is going too fast for just 'gravity'):
+  //      pixelHalfFrame == m.yellow || pixelFullFrame == m.yellow) {
+
+  //    while (pixel_LB != m.black && pixel_RB != m.black && pixel_LB != m.yellow && pixel_RB != m.yellow) { //while the next frame *isn't* a platform:
+  //      pos.y += 0.1; //decend player a little bit down
+  //      getPixelColors();
+
+  //      if ((pixel_LB == m.black || pixel_RB == m.black || pixel_LB == m.yellow || pixel_RB == m.yellow)) { //break out of loop once player reaches/hits the ground
+  //        //vel = initialGravity.copy();
+  //        break;
+  //      }
+  //    }
+  //  }
+  //}
+  
 
   boolean playerSetMove(int k, boolean b) {
     switch (k) {            // "
@@ -102,11 +140,12 @@ class Player {
   void movePlayer() {  //checks color of pixels around player, to see if they are not black. If so, allows player to move in desired direction
     getPixelColors();
     
-    if (pixel_RT != m.black && pixel_RM != m.black && pixel_RB != m.black) {
+    //if either the top, middle, or foot pixel is a collision color, player *shouldn't move - therefore the "!()" together with the "||" in the following if-statements
+    if (!(m.collisionColors.hasValue(pixel_RT) || m.collisionColors.hasValue(pixel_RM) || m.collisionColors.hasValue(pixel_RF))) {
       pos.x = constrain(pos.x + speed * (int(goRight)), 11, width - 11); //if 'd' is pressed, 'goRight' becomes true, meaning: "speed * (int(goRight)) <=> speed * 1"
     }
 
-    if (pixel_LT != m.black && pixel_LM != m.black && pixel_LB != m.black) {
+    if (!(m.collisionColors.hasValue(pixel_LT) || m.collisionColors.hasValue(pixel_LM) || m.collisionColors.hasValue(pixel_LF))) {
       pos.x = constrain(pos.x + speed * (- int(goLeft)), 11, width - 11); //going right *increases* x-value, but going left *decreases* it - therefore "- int(goLeft)"
     }
 
