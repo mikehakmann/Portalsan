@@ -26,7 +26,7 @@ class Bullet { //<>//
     angle = dir.heading() - speed.heading();  //finds difference between speed's heading and the direction
 
     pushMatrix();
-    speed.rotate(angle);  //rotates speed so it has same angle as the direction
+    speed.rotate(angle); //rotates speed so it has same angle as the direction
     dir.add(speed);
     popMatrix();
   }
@@ -36,19 +36,18 @@ class Bullet { //<>//
     nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y+ dir.y);
     currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
     
-    if (nextFrame == m.black || nextFrame == m.yellow) {  //if bullets pos in next frame is black
-
+    if (nextFrame == m.black || nextFrame == m.yellow) { //if bullets pos in next frame is black
       while (currentFrame != m.black || currentFrame != m.yellow) { //if bullet hits a wall next frame:
         currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
-        bulletPos.x += (dir.x/10);  //adds a little to bulletPos
-        bulletPos.y += (dir.y/10);  //so it only barely hits the wall
+        bulletPos.x += (dir.x/10); //adds a little to bulletPos
+        bulletPos.y += (dir.y/10); //so it only barely hits the wall
 
         if (currentFrame == m.black) {  //when a *black* wall is hit: //<>//
-          dir.x = 0;  //makes the direction 0 to stop movement
-          dir.y = 0;  //"
+          dir.x = 0; //makes the direction 0 to stop movement
+          dir.y = 0; //"
 
           firedBullet = false; //bullet has collided and should therefore stop
-          determineRotation();
+          findBulletColors(); //called from here, so it's only being run while bullet flies
           
           //following if-else is for placing the correct portal - determined in mousePressed()
           if (firedLeft) {
@@ -61,10 +60,11 @@ class Bullet { //<>//
             placePortal(2);
             pg.portal2Angle = setRotation(2);
           }
-
+          
           break; //break out of while-loop since bullet has collided
-        }
-        else if (currentFrame == m.yellow) { //if bullet instaed hits a *yellow* wall
+        }//
+        
+        else if (currentFrame == m.yellow) { //if bullet instead hits a *yellow* wall
           firedBullet = false;
           bulletPos.x = -100;
           bulletPos.y = 0;
@@ -75,7 +75,8 @@ class Bullet { //<>//
     }
   }
   
-  void determineRotation() {
+  
+  void findBulletColors() { //determines the colors around the bullet
     north = m.colorAt(bulletPos.x, bulletPos.y - 5);
     south = m.colorAt(bulletPos.x, bulletPos.y + 5);
     east = m.colorAt(bulletPos.x + 5, bulletPos.y);
@@ -89,10 +90,8 @@ class Bullet { //<>//
   float setRotation(int portal) { //sets the rotation (and TP-coords, since these depend on rotation) of the portals
     if (north == m.bgColor && notNorth == m.black) { //only check for black because portals can't be placed on yellow walls
       if (portal == 1) {
-        pg.tpToPortal1_X = pg.portal1_X;
-        pg.tpToPortal1_Y = pg.portal1_Y - 15;
-        println("portal1_X: " + pg.portal1_X);
-        println("portal1_Y: " + pg.portal1_Y);
+        pg.tpToPortal1_X = pg.portal1_X;      //coords that player appears at are also set since rotation is being checked anyway
+        pg.tpToPortal1_Y = pg.portal1_Y - 15; //"
       }//
       else {
         pg.tpToPortal2_X = pg.portal2_X;
