@@ -1,5 +1,5 @@
 class Maps {
-  IntList collisionColors = new IntList();
+  IntList collisionColors = new IntList(); //to store the colors used for collision
   int stage = 0;
   int black = -16777216;  //the color 'black' as an int (obtained with get())
   int yellow = -2621696;  //the color 'yellow' as an int (used to disable portal use - player can still walk on it)
@@ -9,8 +9,8 @@ class Maps {
   boolean button1Powered, button2Powered, loadButton2, loadLever1, loadLever2, loadLever3, coverUp;
 
   Maps() {
-    collisionColors.append(black);
-    collisionColors.append(yellow);
+    collisionColors.append(black);  //add the black and yellow color to the list of collision-related colors
+    collisionColors.append(yellow); //"
     
     player = loadImage("John_Connor.png");
     portalGun = loadImage("portal_gun.png");

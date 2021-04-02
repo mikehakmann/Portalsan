@@ -38,7 +38,8 @@ void setup() {
   textAlign(CENTER, CENTER);
   textSize(14);
 
-  p.getPixelColors();
+  p.getSidePixels(0);  //just to initialize the pixels around the player
+  p.getBottomPixels(); //"
 }
 
 
@@ -55,7 +56,7 @@ void draw() {
   }
   
   p.verticleMovement(); //really just player's collision when falling & jumping
-  p.movePlayer(); //first let player move (sideways),
+  p.sidewaysMovement(); //first let player move (sideways),
   p.render();     //then render player
   p.rotateGun(); //gun is drawn *after* checking color around player for collision so it doesn't interfere
   
