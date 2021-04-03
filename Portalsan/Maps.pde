@@ -1,13 +1,17 @@
 class Maps {
+  IntList collisionColors = new IntList(); //to store the colors used for collision
   int stage = 0;
   int black = -16777216;  //the color 'black' as an int (obtained with get())
-  int yellow = -2621696;  //the color 'yellow' as an int (used to disable portal use - player can still walk on it)
-  int bgColor = -6574665; //the color of the background (blue/cyan-ish) as an int
+  int yellow = -2621696;  //the color 'yellow' as an int (behaves like a black block, except portals can't be placed on it)
+  int bgColor = -6574665; //the color of the background (blue-ish) as an int
   float spawnX, spawnY, lever1Angle, lever2Angle, lever3Angle;
   boolean activate, loadLava = false, secretDiscovered = false;
   boolean button1Powered, button2Powered, loadButton2, loadLever1, loadLever2, loadLever3, coverUp;
 
   Maps() {
+    collisionColors.append(black);  //add the black and yellow color to the list of collision-related colors
+    collisionColors.append(yellow); //"
+    
     player = loadImage("John_Connor.png");
     portalGun = loadImage("portal_gun.png");
     tutorialStage = loadImage("tutorial.png");
@@ -28,14 +32,14 @@ class Maps {
     lever2 = loadImage("lever2Effect.png");
     lever3 = loadImage("lever3Effect.png");
 
-    spawnX = 80;
-    spawnY = 535;
+    spawnX = 80;  //spawn position for player (only for tutorial stage, since other spawn coords are set elsewhere)
+    spawnY = 535; //
   }
 
-  PImage loadMap(int stage) {  //a function for switching the current map/stage
-    switch(stage) {
+  PImage loadMap(int stage) { //a function for switching the current map/stage
+    switch(stage) { //checks the current stage
     case 0:
-      return tutorialStage;
+      return tutorialStage; //returns the map that matches the stage
 
     case 1:
       return stage1;
@@ -61,14 +65,14 @@ class Maps {
 
   void mapProperties() { //function for loading specific stage utilities, like lava or levers, and also changes maps (verry repetitive, though)
     if (stage == 0) { //if player is on tutorial map
-      if (p.pos.x >= 780 && p.pos.x <= width) { //if player is within the end part of this map
+      if (p.pos.x >= 780 && p.pos.x <= width) { //if player is within the end part of this map:
         if (p.pos.y >= 10 && p.pos.y <= 75) {   //"
-          stage = 1; //change stage
+          stage = 1;   //change stage
           spawnX = 30; //update spawnpoint
           spawnY = 50; //"
 
-          p.respawnPlayer(); //spawns player at (spawnX, spawnY)
-          pg.resetPortals(0); //to reset both portals
+          p.respawnPlayer();  //place player at (spawnX, spawnY)
+          pg.resetPortals(0); //reset both portals
 
           println("Moving on to Stage 1!");
         }
@@ -155,7 +159,7 @@ class Maps {
         }
       }
     }//
-    else { //if stage is *not* 2, then lever1 shouldn't be loaded/rendered or usable
+    else { //if stage is *not* 2, then lever1 shouldn't be loaded/rendered or be usable
       loadLever1 = false;
     }
 
@@ -166,6 +170,7 @@ class Maps {
       loadLever3 = true;
       loadButton2 = true;
       coverUp = true;
+      
       if (activate) {
         if (p.pos.x >= 15 && p.pos.x <= 65) {
           if (p.pos.y >= 280 && p.pos.y <= 340) {
@@ -180,8 +185,8 @@ class Maps {
         }
       }
 
-      if (p.pos.x >= 249 && p.pos.x <= 473 && p.pos.y >= 551 && p.pos.y <= 590 ||
-        p.pos.x >= 565 && p.pos.x <= 789 && p.pos.y >= 156 && p.pos.y <= 197) { //killboxes for the lava
+      if (p.pos.x >= 249 && p.pos.x <= 473 && p.pos.y >= 551 && p.pos.y <= 590 || //killboxes for the lava
+          p.pos.x >= 565 && p.pos.x <= 789 && p.pos.y >= 156 && p.pos.y <= 197) {
         p.respawnPlayer();
       }
 
@@ -224,12 +229,12 @@ class Maps {
         }
       }
     }//
-    else {
+    else { //if player is not on stage 3, then don't show stage's levers and lava
       loadLava = false;
       loadLever2 = false;
       loadLever3 = false;
       loadButton2 = false;
-      coverUp = false;
+      coverUp = false; //and don't show the secret's cover either...
     }
 
 
@@ -248,19 +253,19 @@ class Maps {
       }
     }
   }
-  
+
 
 
   void loadMapImages() {
     if (stage == 0) {
       displayText(0);
     }
-    
+
     /*-----------------------------------------------------------------------------------*/
-    
+
     else if (stage == 2) {
       displayText(2);
-      
+
       pushMatrix();
       translate(350, 495);
       rotate(lever1Angle); //rotate lever with specific angle - changed if lever is activated
@@ -296,7 +301,7 @@ class Maps {
     }
 
     /*-----------------------------------------------------------------------------------*/
-    
+
     else if (stage == 3) {
       displayText(3);
 
@@ -309,7 +314,7 @@ class Maps {
           image(poweredButton, 50, 233);
           button2Powered = true;
           secretDiscovered = true; //used to alter the victory text a little
-          
+
           pushMatrix();
           translate(width/2, height/2);
           image(button2, 0, 0);
@@ -352,9 +357,9 @@ class Maps {
         popMatrix();
       }
     }
-    
+
     /*-----------------------------------------------------------------------------------*/
-    
+
     else if (stage == 4) {
       displayText(4); //this displays the victory text
     }
@@ -363,7 +368,7 @@ class Maps {
 
   void displayText(int currStage) { //function for displaying tutorial-info and victory text
     fill(255); //text should usually be white, unless a specific stage needs another color
-    
+
     if (currStage == 0) {
       textAlign(LEFT, CENTER);
       textSize(14);
@@ -373,41 +378,43 @@ class Maps {
       text("Shoot portals using LEFT and RIGHT mouse button", 25, 90);
       text("Reset the portals by pressing 'R'", 25, 120);
       text("Keep yourrself from teleporting by holding SHIFT", 25, 150);
-    }
+      fill(0, 204, 255); //to highlight the Notice more
+      text("Notice: There's a cooldown on firing portals", 25, 185);
+    } //
     
     else if (stage == 2) {
       textAlign(LEFT, CENTER);
       textSize(14);
-      
+
       text("Pull levers with 'E' when standing near them", 25, 40);
       text("Levers stay activated for the remainder of the game", 25, 57);
       text("Stand on buttons will activate them.", 25, 87);
-      text("Stepping off deactivates them", 25, 104);
-    }
-
+      text("Stepping off of buttons will deactivate them", 25, 104);
+    }//
+    
     else if (currStage == 3) {
       textAlign(CENTER, CENTER);
       textSize(14);
       text("Notice: Yellow walls and portals don't get along well, so portals can't be placed on them", width/2, 363);
-    }
-
+    }//
+    
     else if (currStage == 4) {
-      fill(50);
+      fill(50); //to make text dark, but black (since text would enter collision territory)
       textAlign(CENTER, CENTER);
       textSize(30);
-      
+
       text("Congratulations, John Connor!", width/2, 170);
       text("You beat the game!", width/2, 210);
-      
+
       textSize(20);
-      if (!secretDiscovered) {
+      if (!secretDiscovered) { //if player hasn't found the secret: hint that one exists
         text("... But did you find the hidden reference?", width/2, 260);
-      }
+      }//
       else {
         text("And remember: I'll be Back", width/2, 260);
       }
     }
-    
+
     fill(255); //to make sure following things (like the bullet) get their correct color back
   }
 }

@@ -2,9 +2,10 @@ import processing.sound.*; //for sound, if we decide to implement some
 import gifAnimation.*; //for the portal gifs
 
 Bullet b;
+Maps m;
 Player p;
 PortalGun pg;
-Maps m;
+
 PImage player, portalGun;
 PImage tutorialStage, stage1, stage2, stage3, stage4, error; //all the different stages
 PImage button, poweredButton, lever, secretArea; //different stage utilities
@@ -15,14 +16,15 @@ Gif portal1, portal2, lava; //the portals are gifs - "portal1" is green and "por
 void setup() {
   size(802, 602);
   frameRate(60);
+  cursor(CROSS);
   millis();
 
   b = new Bullet();
   m = new Maps(); //this also initializes the different images
-  pg = new PortalGun();
   p = new Player();
+  pg = new PortalGun();
 
-  lava = new Gif(this, "stage_3_Lava.gif");        //"
+  lava = new Gif(this, "stage_3_Lava.gif");     //"
   portal1 = new Gif(this, "PortalGreen.gif");   //initializes the gifs
   portal2 = new Gif(this, "PortalMagenta.gif"); //"
   lava.loop();    //"
@@ -36,6 +38,9 @@ void setup() {
   imageMode(CENTER);
   textAlign(CENTER, CENTER);
   textSize(14);
+
+  p.getSidePixels(0);  //just to initialize the pixels around the player
+  p.getBottomPixels(); //"
 }
 
 
@@ -50,12 +55,12 @@ void draw() {
     b.collision();
     b.bulletUpdate();
   }
-
-  p.verticleMovement(); //really just player's collision when falling & jumping
-  p.movePlayer();
-  p.render();
-  p.rotateGun(); //notice gun is drawn *after* checking color around player for collision (that way it doesn't interfere)
-
+  
+  p.verticleMovement(); //this function is just for player's collision when falling & jumping
+  p.sidewaysMovement(); //first let player move (sideways),
+  p.render();           //then render player
+  p.rotateGun(); //gun is drawn *after* checking color around player for collision so it doesn't interfere
+  
   pg.renderPortal1(pg.portal1_X, pg.portal1_Y); //renders portals
   pg.renderPortal2(pg.portal2_X, pg.portal2_Y); //"
   if (pg.renderPortal1 && pg.renderPortal2) { //if both portals are placed, then allows for teleporting between them
@@ -63,28 +68,27 @@ void draw() {
     pg.portalTP2(); //func for teleporting *from* portal 2
   }
 
-  if (m.coverUp) {
+  if (m.coverUp) { //render the cover for the secret area if it should be (determined by the stage)
     pushMatrix();
     translate(width/2, height/2);
     image(secretArea, 0, 0);
     popMatrix();
   }
-
-  //println("mouseX: " + mouseX + "  mouseY: " + mouseY);
 }
 
 
-
 void mousePressed() {
-  if (mouseButton == LEFT) {
-    b.firedLeft = true; //left clicked, meaning left portal should be fired
-    b.c = #328b39;
-    pg.firePortal(1); //fire the correct portal
-  }//comment to stop "else" from appearing on this line
-  else if (mouseButton == RIGHT) {
-    b.firedLeft = false; //right portal was fired, which *isn't* the left one
-    b.c = #9205b6;
-    pg.firePortal(2);
+  if (millis() - pg.shootPortal_CD > 1500) { //if the cooldown time for shooting a portal has passed:
+    if (mouseButton == LEFT) {
+      b.firedLeft = true; //left clicked, meaning left portal should be fired
+      b.bulletColor = #328b39; //give bullet a color to indicate the portal it'll place
+      pg.firePortal(1); //fire the correct portal
+    }//comment to stop "else" from appearing on this line after auto-format
+    else if (mouseButton == RIGHT) {
+      b.firedLeft = false; //right portal was fired, which *isn't* the left one
+      b.bulletColor = #9205b6;
+      pg.firePortal(2);
+    }
   }
 }
 
@@ -105,7 +109,7 @@ void keyPressed() {
   }
 }
 
-void keyReleased() {
+void keyReleased() { //'keyReleased()' is used together with 'keyPressed()' as a "do <action> while <button> is held"
   p.playerSetMove(keyCode, false);
 
   if (keyCode == ' ') {
