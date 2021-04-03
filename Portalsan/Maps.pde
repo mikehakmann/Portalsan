@@ -2,8 +2,8 @@ class Maps {
   IntList collisionColors = new IntList(); //to store the colors used for collision
   int stage = 0;
   int black = -16777216;  //the color 'black' as an int (obtained with get())
-  int yellow = -2621696;  //the color 'yellow' as an int (used to disable portal use - player can still walk on it)
-  int bgColor = -6574665; //the color of the background (blue/cyan-ish) as an int
+  int yellow = -2621696;  //the color 'yellow' as an int (behaves like a black block, except portals can't be placed on it)
+  int bgColor = -6574665; //the color of the background (blue-ish) as an int
   float spawnX, spawnY, lever1Angle, lever2Angle, lever3Angle;
   boolean activate, loadLava = false, secretDiscovered = false;
   boolean button1Powered, button2Powered, loadButton2, loadLever1, loadLever2, loadLever3, coverUp;
@@ -36,7 +36,7 @@ class Maps {
     spawnY = 535; //
   }
 
-  PImage loadMap(int stage) {  //a function for switching the current map/stage
+  PImage loadMap(int stage) { //a function for switching the current map/stage
     switch(stage) { //checks the current stage
     case 0:
       return tutorialStage; //returns the map that matches the stage

@@ -2,9 +2,12 @@ class Player {
   PVector initialGravity = new PVector(0, 0); //to reset velocity later on when player hits the ground
   PVector pos, vel;
 
-  float gravAcc, angle, targetAngle, tpPosX, tpPosY, transferVel, portalGunDir;
+  float gravAcc, tpPosX, tpPosY, transferVel;
+  float angle, targetAngle, portalGunDir; //these are for rotating the portal gun
+  
   boolean flipPlayer = false, jump = false;
   boolean goLeft, goRight, canGoLeft, canGoRight; //only important for sidewaysMovement()
+  
   int speed, jumpAcc, terminalVel;
   int pixel_LT, pixel_LM, pixel_LF, pixel_LB, pixel_RT, pixel_RM, pixel_RF, pixel_RB; //for colors of pixels at player's corners, middle and feet ("LF" and "RF" are the feet)
   int pixelHalfFrame, pixelFullFrame; //for color beneath player in the next frame
@@ -29,7 +32,7 @@ class Player {
     pixel_RM = get(int(pos.x + (10 + (speed * frame))), int(pos.y));      //"
     pixel_RF = get(int(pos.x + (11 + (speed * frame))), int(pos.y + 14)); //"
     canGoRight = !(m.collisionColors.hasValue(pixel_RT) || m.collisionColors.hasValue(pixel_RM) || m.collisionColors.hasValue(pixel_RF));
-  }
+  } //('canGoLeft' and 'canGoRight' are negated since they checks if pixels are colliding, when it's free space we actually want to check for)
   
   void getBottomPixels() { //special function for falling-related pixels, so the other colors aren't determined when there's no need
     pixel_LB = get(int(pos.x - (9)), int(pos.y + 15));
@@ -55,13 +58,13 @@ class Player {
 
 
   void verticleMovement() {
-    if ((pixel_LB == m.black || pixel_RB == m.black || pixel_LB == m.yellow || pixel_RB == m.yellow) && jump) {  //if player is on the ground/platform (i.e. not falling) and jumps:
+    if ((m.collisionColors.hasValue(pixel_LB) || m.collisionColors.hasValue(pixel_RB)) && jump) { //if player is on the ground/platform (i.e. not falling) and jumps:
       vel.y = jumpAcc; //set vel to jump (i.e. set it to negative) so player goes upwards
       pos.add(vel); //add the velocity after a jump
       jump = false; //stop the jumping, so player doesn't fly away
     }//
     
-    else if (pixel_LB != m.black && pixel_RB != m.black && pixel_LB != m.yellow && pixel_RB != m.yellow ) {  //if the color right at the bottom edge of the player is NOT black or yellow: let player fall
+    else if (!(m.collisionColors.hasValue(pixel_LB) || m.collisionColors.hasValue(pixel_RB))) { //if the color right at the bottom edge of the player is NOT black or yellow: let player fall
       if (vel.y < terminalVel) { //if velocity is below the limit:
         vel.y += gravAcc;  //add the acceleration to gravity to give an acceleration-like effect
       }
@@ -76,10 +79,9 @@ class Player {
     }
 
     getBottomPixels(); //update the pixels used for verticle movement/collision
-    if (pixelHalfFrame == m.black  || pixelFullFrame == m.black  || //checks player's pos in next frame of falling (uses 'gravity/2' in case player is going too fast for just 'gravity'):
-        pixelHalfFrame == m.yellow || pixelFullFrame == m.yellow) {
-
-      while (pixel_LB != m.black && pixel_RB != m.black && pixel_LB != m.yellow && pixel_RB != m.yellow) { //while the next frame *isn't* a platform:
+    if (m.collisionColors.hasValue(pixelHalfFrame) || m.collisionColors.hasValue(pixelFullFrame)) { //checks player's pos in next frame of falling (uses 'gravity/2' in case player is going too fast for just 'gravity'):
+          
+      while (!(m.collisionColors.hasValue(pixel_LB) || m.collisionColors.hasValue(pixel_RB))) { //while the next frame *isn't* a platform:
         pos.y++; //decend player a little bit down
         getBottomPixels();
         

@@ -3,13 +3,27 @@ class PortalGun {
   float tpToPortal1_X, tpToPortal1_Y, tpToPortal2_X, tpToPortal2_Y; //teleport coords
   float portal1Angle, portal2Angle; //angle each portal is rotated with
   float tempTP_X, tempTP_Y;
+  
   boolean renderPortal1, renderPortal2; //whether a portal should be rendered
-  boolean haltTP = false; //holding 'shift' halts teleporting
+  boolean haltTP; //holding 'shift' halts teleporting
 
   int shootPortal_CD, tpToPortal1_CD, tpToPortal2_CD; //cooldowns for shooting portals and teleporting to them
-  int bounds = 20; //plus/minus value for portal collision with player
   int portal1_Dir, portal2_Dir; //directions which the portals are facing (north = 1, south = 2, and so on - determined in'setRotation()' from Bullet class)
-
+  int bounds; //plus/minus value for portal collision with player
+  
+  
+  PortalGun() {
+    portal1_X = -100; //"
+    portal1_Y = 0;    //initialize portals with positions outside the display window
+    portal2_X = -100; //"
+    portal2_Y = 0;    //"
+    
+    renderPortal1 = false;
+    renderPortal2 = false;
+    haltTP = false;
+    bounds = 20;
+  }
+  
 
   int checkHitboxes() { //function to check if player collides with a portal
     if (!haltTP) {
@@ -63,6 +77,7 @@ class PortalGun {
     }
   }
 
+
   void firePortal(int portal) {
     b.firedBullet = true; //basically enables collision for the bullet (see void draw())
     b.updateBulletDir(); //updates the direction, the bullet should travel
@@ -110,7 +125,6 @@ class PortalGun {
       popMatrix();
     }
   }
-
 
   void renderPortal2(float portalX, float portalY) {
     if (renderPortal2 == true) {

@@ -2,9 +2,10 @@ import processing.sound.*; //for sound, if we decide to implement some
 import gifAnimation.*; //for the portal gifs
 
 Bullet b;
+Maps m;
 Player p;
 PortalGun pg;
-Maps m;
+
 PImage player, portalGun;
 PImage tutorialStage, stage1, stage2, stage3, stage4, error; //all the different stages
 PImage button, poweredButton, lever, secretArea; //different stage utilities
@@ -20,8 +21,8 @@ void setup() {
 
   b = new Bullet();
   m = new Maps(); //this also initializes the different images
-  pg = new PortalGun();
   p = new Player();
+  pg = new PortalGun();
 
   lava = new Gif(this, "stage_3_Lava.gif");     //"
   portal1 = new Gif(this, "PortalGreen.gif");   //initializes the gifs

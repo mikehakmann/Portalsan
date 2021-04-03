@@ -18,12 +18,12 @@ class Bullet { //<>//
     bulletPos.x = p.pos.x;
     bulletPos.y = p.pos.y;
 
-    dir.x = (mouseX-p.pos.x);  //makes the direction of the bullet a vector
-    dir.y = (mouseY-p.pos.y);  //between player and the mouse
+    dir.x = (mouseX-p.pos.x); //makes the direction of the bullet a vector
+    dir.y = (mouseY-p.pos.y); //between player and the mouse
 
-    dir.normalize();  //normalizes direction since it's just the direction and nothing more (or less)
+    dir.normalize(); //normalizes direction since it's just the direction and nothing more (or less)
 
-    angle = dir.heading() - speed.heading();  //finds difference between speed's heading and the direction
+    angle = dir.heading() - speed.heading(); //finds difference between speed's heading and the direction
 
     pushMatrix();
     speed.rotate(angle); //rotates speed so it has same angle as the direction
