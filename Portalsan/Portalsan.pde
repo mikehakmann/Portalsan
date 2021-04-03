@@ -55,9 +55,9 @@ void draw() {
     b.bulletUpdate();
   }
   
-  p.verticleMovement(); //really just player's collision when falling & jumping
+  p.verticleMovement(); //this function is just for player's collision when falling & jumping
   p.sidewaysMovement(); //first let player move (sideways),
-  p.render();     //then render player
+  p.render();           //then render player
   p.rotateGun(); //gun is drawn *after* checking color around player for collision so it doesn't interfere
   
   pg.renderPortal1(pg.portal1_X, pg.portal1_Y); //renders portals
@@ -67,26 +67,22 @@ void draw() {
     pg.portalTP2(); //func for teleporting *from* portal 2
   }
 
-  if (m.coverUp) {
+  if (m.coverUp) { //render the cover for the secret area if it should be (determined by the stage)
     pushMatrix();
     translate(width/2, height/2);
     image(secretArea, 0, 0);
     popMatrix();
   }
-
-  //println("mouseX: " + mouseX + "  mouseY: " + mouseY);
-  //println("Color at mouse: " + get(int(mouseX), int(mouseY)));
 }
-
 
 
 void mousePressed() {
   if (millis() - pg.shootPortal_CD > 1500) { //if the cooldown time for shooting a portal has passed:
     if (mouseButton == LEFT) {
       b.firedLeft = true; //left clicked, meaning left portal should be fired
-      b.bulletColor = #328b39;
+      b.bulletColor = #328b39; //give bullet a color to indicate the portal it'll place
       pg.firePortal(1); //fire the correct portal
-    }//comment to stop "else" from appearing on this line
+    }//comment to stop "else" from appearing on this line after auto-format
     else if (mouseButton == RIGHT) {
       b.firedLeft = false; //right portal was fired, which *isn't* the left one
       b.bulletColor = #9205b6;
@@ -112,7 +108,7 @@ void keyPressed() {
   }
 }
 
-void keyReleased() {
+void keyReleased() { //'keyReleased()' is used together with 'keyPressed()' as a "do <action> while <button> is held"
   p.playerSetMove(keyCode, false);
 
   if (keyCode == ' ') {

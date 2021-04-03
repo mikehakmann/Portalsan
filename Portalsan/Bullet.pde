@@ -36,13 +36,13 @@ class Bullet { //<>//
     nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y+ dir.y);
     currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
     
-    if (nextFrame == m.black || nextFrame == m.yellow) { //if bullets pos in next frame is black
-      while (currentFrame != m.black || currentFrame != m.yellow) { //if bullet hits a wall next frame:
+    if (nextFrame == m.black || nextFrame == m.yellow || nextFrame == -16185079) { //if bullets pos in next frame is black or yellow ("-16185079" is almost black)
+      while (currentFrame != m.black || currentFrame != m.yellow || currentFrame != -16185079){ //if bullet hits a wall next frame:
         currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
         bulletPos.x += (dir.x/10); //adds a little to bulletPos
         bulletPos.y += (dir.y/10); //so it only barely hits the wall
 
-        if (currentFrame == m.black) {  //when a *black* wall is hit: //<>//
+        if (currentFrame == m.black || currentFrame == -16185079) { //when a *black* wall is hit: //<>//
           dir.x = 0; //makes the direction 0 to stop movement
           dir.y = 0; //"
 
@@ -90,10 +90,12 @@ class Bullet { //<>//
   float setRotation(int portal) { //sets the rotation (and TP-coords, since these depend on rotation) of the portals
     if (north == m.bgColor && notNorth == m.black) { //only check for black because portals can't be placed on yellow walls
       if (portal == 1) {
+        pg.portal1_Dir = 1; //save the direction that portal 1 is facing for later
         pg.tpToPortal1_X = pg.portal1_X;      //coords that player appears at are also set since rotation is being checked anyway
         pg.tpToPortal1_Y = pg.portal1_Y - 15; //"
       }//
       else {
+        pg.portal2_Dir = 1; //save the direction that portal2 is facing for later
         pg.tpToPortal2_X = pg.portal2_X;
         pg.tpToPortal2_Y = pg.portal2_Y - 15;
       }
@@ -101,32 +103,38 @@ class Bullet { //<>//
     }
     else if (south == m.bgColor && notSouth == m.black) {
       if (portal == 1) {
+        pg.portal1_Dir = 2;
         pg.tpToPortal1_X = pg.portal1_X;
         pg.tpToPortal1_Y = pg.portal1_Y + 15;
       }//
       else {
+        pg.portal2_Dir = 2;
         pg.tpToPortal2_X = pg.portal2_X;
         pg.tpToPortal2_Y = pg.portal2_Y + 15;
       }
       return PI/2;
     }
-    else if (east == m.bgColor && notEast == m.black) {
+    else if (east == m.bgColor && (notEast == m.black || notEast == -16185079)) { //checking for -16185079 too, so bullet can hit stage 2's barrier as well
       if (portal == 1) {
+        pg.portal1_Dir = 3;
         pg.tpToPortal1_X = pg.portal1_X + 15;
         pg.tpToPortal1_Y = pg.portal1_Y;
       }//
       else {
+        pg.portal2_Dir = 3;
         pg.tpToPortal2_X = pg.portal2_X + 15;
         pg.tpToPortal2_Y = pg.portal2_Y;
       }
       return PI;
     }
-    else if (west == m.bgColor && notWest == m.black) {
-      if (portal == 1) {
+    else if (west == m.bgColor && (notWest == m.black || notWest == -16185079)) { //portal can only be on left or right side of this barrier,
+      if (portal == 1) {                                                          //so no need to check north or south
+        pg.portal1_Dir = 4;
         pg.tpToPortal1_X = pg.portal1_X - 15;
         pg.tpToPortal1_Y = pg.portal1_Y;
       }//
       else {
+        pg.portal2_Dir = 4;
         pg.tpToPortal2_X = pg.portal2_X - 15;
         pg.tpToPortal2_Y = pg.portal2_Y;
       }

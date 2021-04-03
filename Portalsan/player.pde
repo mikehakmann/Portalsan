@@ -2,7 +2,7 @@ class Player {
   PVector initialGravity = new PVector(0, 0); //to reset velocity later on when player hits the ground
   PVector pos, vel;
 
-  float gravAcc, angle, targetAngle, tpPosX, tpPosY;
+  float gravAcc, angle, targetAngle, tpPosX, tpPosY, transferVel, portalGunDir;
   boolean flipPlayer = false, jump = false;
   boolean goLeft, goRight, canGoLeft, canGoRight; //only important for sidewaysMovement()
   int speed, jumpAcc, terminalVel;
@@ -57,37 +57,100 @@ class Player {
   void verticleMovement() {
     if ((pixel_LB == m.black || pixel_RB == m.black || pixel_LB == m.yellow || pixel_RB == m.yellow) && jump) {  //if player is on the ground/platform (i.e. not falling) and jumps:
       vel.y = jumpAcc; //set vel to jump (i.e. set it to negative) so player goes upwards
-      pos.add(vel); //add the velocity (which has become more of an acceleration now) to player
+      pos.add(vel); //add the velocity after a jump
       jump = false; //stop the jumping, so player doesn't fly away
     }//
+    
     else if (pixel_LB != m.black && pixel_RB != m.black && pixel_LB != m.yellow && pixel_RB != m.yellow ) {  //if the color right at the bottom edge of the player is NOT black or yellow: let player fall
       if (vel.y < terminalVel) { //if velocity is below the limit:
         vel.y += gravAcc;  //add the acceleration to gravity to give an acceleration-like effect
       }
-      if (vel.y > terminalVel) { //if gravity is above the limit:
-        vel.y = terminalVel; //set gravity right *at* the limit
+      if (vel.y > terminalVel) { //if terminal velocity has been reached or passed:
+        vel.y = terminalVel; //set velocity right *at* the limit
       }
-      pos.add(vel); //add gravity to player's position
+      //pos.add(vel); //add the velocity to player's position
     }//
+    
     else { //if color *is* black
-      vel = initialGravity.copy();  //reset the gravity
+      vel = initialGravity.copy(); //reset the velocity
     }
 
-    getBottomPixels();
-
+    getBottomPixels(); //update the pixels used for verticle movement/collision
     if (pixelHalfFrame == m.black  || pixelFullFrame == m.black  || //checks player's pos in next frame of falling (uses 'gravity/2' in case player is going too fast for just 'gravity'):
         pixelHalfFrame == m.yellow || pixelFullFrame == m.yellow) {
 
       while (pixel_LB != m.black && pixel_RB != m.black && pixel_LB != m.yellow && pixel_RB != m.yellow) { //while the next frame *isn't* a platform:
         pos.y++; //decend player a little bit down
         getBottomPixels();
-
-        if ((pixel_LB == m.black || pixel_RB == m.black || pixel_LB == m.yellow || pixel_RB == m.yellow)) { //break out of loop once player reaches/hits the ground
-          //vel = initialGravity.copy();
+        
+        if (pg.checkHitboxes() == 1) { //if player hits portal 1 instead of the ground:
+          transferVel = vel.y; //store vel.y (essentially player's gravity) to add it later
+          vel = initialGravity.copy(); //to reset vel completely
+          
+          switch(pg.portal2_Dir) { //check which way the portal being teleported to is facing:
+            case 1: //if it's facing north:
+              vel.y -= transferVel; //make the velocity point north (vel has essentially been redirected/rotated after this)
+              break; //remember to break out of switch-statement
+            
+            case 2:
+              vel.y += transferVel;
+              break;
+            
+            case 3:
+              vel.x += transferVel;
+              break;
+            
+            case 4:
+              vel.x -= transferVel;
+              break;
+          }
+          
+          pg.tpToPortal2_CD = millis(); //"
+          pg.tpToPortal1_CD = 0;        //teleport player
+          pos.x = pg.tpToPortal2_X;     //(does the same thing as in portalTP1 from PortalGun class)
+          pos.y = pg.tpToPortal2_Y;     //"
+          
+          break; //remember to break out of while-loop too
+        }//
+        
+        else if (pg.checkHitboxes() == 2) { //if player hits portal 2:
+          transferVel = vel.y;
+          vel = initialGravity.copy();
+          
+          switch(pg.portal1_Dir) {
+            case 1:
+              vel.y -= transferVel;
+              break;
+            
+            case 2:
+              vel.y += transferVel;
+              break;
+            
+            case 3:
+              vel.x += transferVel;
+              break;
+            
+            case 4:
+              vel.x -= transferVel;
+              break;
+          }
+          
+          pg.tpToPortal1_CD = millis();
+          pg.tpToPortal2_CD = 0;
+          pos.x = pg.tpToPortal1_X;
+          pos.y = pg.tpToPortal1_Y;
+          
           break;
+        }//
+        
+        else if (m.collisionColors.hasValue(pixel_LB) || m.collisionColors.hasValue(pixel_RB)) {
+          vel = initialGravity.copy(); //player should stop when hitting the ground
+          break; //break out of loop once player reaches/hits the ground
         }
       }
     }
+    
+    pos.add(vel); //and finally, add the velocity to player
   }
   
 
@@ -123,23 +186,10 @@ class Player {
           }
         }
       }
-    }//
-    else {                                                                        //"
-      println("can't go right");                                                  //"
-      println("Right Top colliding?    " + m.collisionColors.hasValue(pixel_RT)); //"
-      println("Right Middle colliding? " + m.collisionColors.hasValue(pixel_RM)); //"
-      println("Right Foot colliding?   " + m.collisionColors.hasValue(pixel_RF)); //"
-      println("Right Bottom colliding? " + m.collisionColors.hasValue(pixel_RB)); //debugging
-      println();                                                                  //"
-      stroke(0, 0, 255);                                                          //"
-      point(pos.x+10, pos.y+14);                                                  //"
-      stroke(255, 0, 0);                                                          //"
-      point(pos.x+9, pos.y+15);                                                   //"
-    }                                                                             //"
+    }
     
     getSidePixels(0);
     if (canGoLeft) {
-      //pos.x = constrain(pos.x + speed * (- int(goLeft)), 11, width - 11); //going right *increases* x-value, but going left *decreases* it - therefore "- int(goLeft)"
       pos.x += speed * (- int(goLeft)); //going right *increases* x-value, but going left *decreases* it - therefore "- int(goLeft)"
       
       getSidePixels(1);
@@ -155,19 +205,7 @@ class Player {
           }
         }
       }
-    }//
-    else {                                                                        //"
-      println("can't go left");                                                   //"
-      println("Left Top colliding?    " + m.collisionColors.hasValue(pixel_LT));  //"
-      println("Left Middle colliding? " + m.collisionColors.hasValue(pixel_LM));  //"
-      println("Left Foot colliding?   " + m.collisionColors.hasValue(pixel_LF));  //"
-      println("Left Bottom colliding? " + m.collisionColors.hasValue(pixel_LB));  //debugging
-      println();                                                                  //"
-      stroke(0, 0, 255);                                                          //"
-      point(pos.x-10, pos.y+14);                                                  //"
-      stroke(255, 0, 0);                                                          //"
-      point(pos.x-9, pos.y+15);                                                   //"
-    }                                                                             //"
+    }
 
     if (pos.x > width || pos.x < 0 || pos.y > height || pos.y < 0) {  //checks if player is outside the screen (map switching happens before player gets all the way out)
       respawnPlayer(); //if so, respawns player
@@ -176,8 +214,8 @@ class Player {
   
 
   void respawnPlayer() {
-    pos.x = m.spawnX;  // resets players position (looks like player respawns)
-    pos.y = m.spawnY;  // "
+    pos.x = m.spawnX;  //resets players position (looks like player respawns)
+    pos.y = m.spawnY;  //"
     vel = initialGravity.copy(); //reset velocity so player doesn't end up inside the ground upon respawn
   }
 
@@ -185,11 +223,11 @@ class Player {
   void rotateGun() {
     angle = atan2(mouseY - pos.y, mouseX - pos.x);  //find angle of mouse pos relative to player's pos
 
-    float dir = (angle - targetAngle) / TWO_PI; //"
-    dir -= round(dir);                          //to find the correct direction to face
-    dir *= TWO_PI;                              //"
+    portalGunDir = (angle - targetAngle) / TWO_PI; //"
+    portalGunDir -= round(portalGunDir);           //to find the correct direction to face
+    portalGunDir *= TWO_PI;                        //"
 
-    targetAngle += dir;
+    targetAngle += portalGunDir;
 
     noFill();
     stroke(255);

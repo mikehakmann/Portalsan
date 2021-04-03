@@ -37,9 +37,9 @@ class Maps {
   }
 
   PImage loadMap(int stage) {  //a function for switching the current map/stage
-    switch(stage) {
+    switch(stage) { //checks the current stage
     case 0:
-      return tutorialStage;
+      return tutorialStage; //returns the map that matches the stage
 
     case 1:
       return stage1;
@@ -65,14 +65,14 @@ class Maps {
 
   void mapProperties() { //function for loading specific stage utilities, like lava or levers, and also changes maps (verry repetitive, though)
     if (stage == 0) { //if player is on tutorial map
-      if (p.pos.x >= 780 && p.pos.x <= width) { //if player is within the end part of this map
+      if (p.pos.x >= 780 && p.pos.x <= width) { //if player is within the end part of this map:
         if (p.pos.y >= 10 && p.pos.y <= 75) {   //"
-          stage = 1; //change stage
+          stage = 1;   //change stage
           spawnX = 30; //update spawnpoint
           spawnY = 50; //"
 
-          p.respawnPlayer(); //spawns player at (spawnX, spawnY)
-          pg.resetPortals(0); //to reset both portals
+          p.respawnPlayer();  //place player at (spawnX, spawnY)
+          pg.resetPortals(0); //reset both portals
 
           println("Moving on to Stage 1!");
         }
