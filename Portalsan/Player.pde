@@ -190,7 +190,6 @@ class Player {
       }
     }
     
-    getSidePixels(0);
     if (canGoLeft) {
       pos.x += speed * (- int(goLeft)); //going right *increases* x-value, but going left *decreases* it - therefore "- int(goLeft)"
       

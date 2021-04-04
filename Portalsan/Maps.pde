@@ -1,6 +1,6 @@
 class Maps {
   IntList collisionColors = new IntList(); //to store the colors used for collision
-  int stage = 0;
+  int stage = 2;
   int black = -16777216;  //the color 'black' as an int (obtained with get())
   int yellow = -2621696;  //the color 'yellow' as an int (behaves like a black block, except portals can't be placed on it)
   int bgColor = -6574665; //the color of the background (blue-ish) as an int
@@ -284,7 +284,7 @@ class Maps {
         }
 
         if (p.pos.x >= 415 && p.pos.x <= 455 && p.pos.y >= 40 && p.pos.y <= 60 || //if player is within either button's bounds:
-          p.pos.x >= 751 && p.pos.x <= 780 && p.pos.y >= 75 && p.pos.y <= 95) {
+          p.pos.x >= 735 && p.pos.x <= 790 && p.pos.y >= 75 && p.pos.y <= 95) { //button two's hitbox is extended so player doesn't get stuck in the barrier
 
           image(poweredButton, 435, 47); //render the powered buttons
           image(poweredButton, 771, 82); //"

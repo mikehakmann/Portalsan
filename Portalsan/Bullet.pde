@@ -36,8 +36,8 @@ class Bullet { //<>//
     nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y+ dir.y);
     currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
     
-    if (nextFrame == m.black || nextFrame == m.yellow || nextFrame == -16185079) { //if bullets pos in next frame is black or yellow ("-16185079" is almost black)
-      while (currentFrame != m.black || currentFrame != m.yellow || currentFrame != -16185079){ //if bullet hits a wall next frame:
+    if (nextFrame == m.black || nextFrame == m.yellow) { //if bullets pos in next frame is black or yellow
+      while (currentFrame != m.black || currentFrame != m.yellow){ //if bullet hits a wall next frame:
         currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
         bulletPos.x += (dir.x/10); //adds a little to bulletPos
         bulletPos.y += (dir.y/10); //so it only barely hits the wall
