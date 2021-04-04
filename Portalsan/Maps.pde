@@ -1,6 +1,6 @@
 class Maps {
   IntList collisionColors = new IntList(); //to store the colors used for collision
-  int stage = 2;
+  int stage = 0;
   int black = -16777216;  //the color 'black' as an int (obtained with get())
   int yellow = -2621696;  //the color 'yellow' as an int (behaves like a black block, except portals can't be placed on it)
   int bgColor = -6574665; //the color of the background (blue-ish) as an int
