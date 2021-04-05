@@ -66,15 +66,14 @@ class Player {
     
     else if (!(m.collisionColors.hasValue(pixel_LB) || m.collisionColors.hasValue(pixel_RB))) { //if the color right at the bottom edge of the player is NOT black or yellow: let player fall
       if (vel.y < terminalVel) { //if velocity is below the limit:
-        vel.y += gravAcc;  //add the acceleration to gravity to give an acceleration-like effect
+        vel.y += gravAcc; //add the acceleration to gravity to achieve an acceleration-like effect
       }
       if (vel.y > terminalVel) { //if terminal velocity has been reached or passed:
         vel.y = terminalVel; //set velocity right *at* the limit
       }
-      //pos.add(vel); //add the velocity to player's position
     }//
     
-    else { //if color *is* black
+    else { //if color *is* black or yellow:
       vel = initialGravity.copy(); //reset the velocity
     }
 

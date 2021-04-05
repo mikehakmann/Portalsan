@@ -36,13 +36,13 @@ class Bullet { //<>//
     nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y+ dir.y);
     currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
     
-    if (nextFrame == m.black || nextFrame == m.yellow) { //if bullets pos in next frame is black or yellow
-      while (currentFrame != m.black || currentFrame != m.yellow){ //if bullet hits a wall next frame:
+    if (m.collisionColors.hasValue(nextFrame)) { //if bullets pos in next frame is black or yellow
+      while (!m.collisionColors.hasValue(currentFrame)){ //if bullet hits a wall next frame:
         currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
         bulletPos.x += (dir.x/10); //adds a little to bulletPos
         bulletPos.y += (dir.y/10); //so it only barely hits the wall
 
-        if (currentFrame == m.black || currentFrame == -16185079) { //when a *black* wall is hit: //<>//
+        if (currentFrame == m.black) { //when a *black* wall is hit: //<>//
           dir.x = 0; //makes the direction 0 to stop movement
           dir.y = 0; //"
 
@@ -160,10 +160,10 @@ class Bullet { //<>//
 
 
   void bulletUpdate() {
-    bulletPos.add(dir);  //adds direction (which got a speed added) so bullet moves in desired direction
+    bulletPos.add(dir); //adds direction (which got a speed added) so bullet moves in desired direction
     pushMatrix();
     fill(bulletColor);
-    circle(bulletPos.x, bulletPos.y, 10);  //placeholder (or not - bullet might stay like this)
+    circle(bulletPos.x, bulletPos.y, 10); //placeholder (or not - bullet might stay like this)
     popMatrix();
   }
 }
