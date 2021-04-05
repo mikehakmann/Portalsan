@@ -19,18 +19,18 @@ class Maps {
     stage2 = loadImage("stage_2.png");
     stage3 = loadImage("stage_3.png");
     stage4 = loadImage("stage_4.png"); //the victory stage
-    error = loadImage("error.png");
+    error = loadImage("error.png"); //error-image in case a value outside [0;4] is used in loadMap()
 
-    button = loadImage("unpoweredButton.png");
-    poweredButton = loadImage("poweredButton.png");
-    lever = loadImage("lever.png");
-    secretArea = loadImage("stage_3_secret.png");
+    button = loadImage("unpoweredButton.png");      //"
+    poweredButton = loadImage("poweredButton.png"); //images for the mechanisms
+    lever = loadImage("lever.png");                 //"
+    secretArea = loadImage("stage_3_secret.png"); //the cover for the secret (is only near-black so doesn't stop player from moving through it)
 
-    button1 = loadImage("button1Effect.png");
-    button2 = loadImage("terminator_hand.png");
-    lever1 = loadImage("lever1Effect.png");
-    lever2 = loadImage("lever2Effect.png");
-    lever3 = loadImage("lever3Effect.png");
+    button1 = loadImage("button1Effect.png");   //"
+    button2 = loadImage("terminator_hand.png"); //"
+    lever1 = loadImage("lever1Effect.png");     //the effects of the different mechanisms
+    lever2 = loadImage("lever2Effect.png");     //"
+    lever3 = loadImage("lever3Effect.png");     //"
 
     spawnX = 80;  //spawn position for player (only for tutorial stage, since other spawn coords are set elsewhere)
     spawnY = 535; //

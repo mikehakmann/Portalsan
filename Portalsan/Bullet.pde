@@ -100,7 +100,8 @@ class Bullet { //<>//
         pg.tpToPortal2_Y = pg.portal2_Y - 15;
       }
       return -(PI/2);
-    }
+    }//
+    
     else if (south == m.bgColor && notSouth == m.black) {
       if (portal == 1) {
         pg.portal1_Dir = 2;
@@ -113,7 +114,8 @@ class Bullet { //<>//
         pg.tpToPortal2_Y = pg.portal2_Y + 15;
       }
       return PI/2;
-    }
+    }//
+    
     else if (east == m.bgColor && (notEast == m.black || notEast == -16185079)) { //checking for -16185079 too, so bullet can hit stage 2's barrier as well
       if (portal == 1) {
         pg.portal1_Dir = 3;
@@ -126,7 +128,8 @@ class Bullet { //<>//
         pg.tpToPortal2_Y = pg.portal2_Y;
       }
       return PI;
-    }
+    }//
+    
     else if (west == m.bgColor && (notWest == m.black || notWest == -16185079)) { //portal can only be on left or right side of this barrier,
       if (portal == 1) {                                                          //so no need to check north or south
         pg.portal1_Dir = 4;
