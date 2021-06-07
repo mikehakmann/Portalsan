@@ -99,7 +99,7 @@ class Bullet { //<>//
         pg.tpToPortal2_X = pg.portal2_X;
         pg.tpToPortal2_Y = pg.portal2_Y - 15;
       }
-      return -(PI/2);
+      return PI/2;
     }//
     
     else if (south == m.bgColor && notSouth == m.black) {
@@ -113,7 +113,7 @@ class Bullet { //<>//
         pg.tpToPortal2_X = pg.portal2_X;
         pg.tpToPortal2_Y = pg.portal2_Y + 15;
       }
-      return PI/2;
+      return -(PI/2);
     }//
     
     else if (east == m.bgColor && (notEast == m.black || notEast == -16185079)) { //checking for -16185079 too, so bullet can hit stage 2's barrier as well
