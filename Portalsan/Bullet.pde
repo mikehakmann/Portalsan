@@ -33,7 +33,7 @@ class Bullet { //<>//
 
 
   void collision() { //both checks for and perfoms collision - also only after detecting collision, that portals are actually rendered
-    nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y+ dir.y);
+    nextFrame = m.colorAt(bulletPos.x + dir.x, bulletPos.y + dir.y);
     currentFrame = m.colorAt(bulletPos.x, bulletPos.y);
     
     if (m.collisionColors.hasValue(nextFrame)) { //if bullets pos in next frame is black or yellow
